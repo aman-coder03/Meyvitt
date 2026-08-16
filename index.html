@@ -3,10 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEYVITT — Business, Finance & Technology Advisory</title>
+<title>MEYVITT | Business Technology Growth </title>
 <meta name="description" content="MEYVITT helps growing businesses understand their numbers, improve operations, and use technology to grow smarter. Business strategy, financial analysis and technology delivery, in one team.">
+
+<!-- Favicon: inline SVG monogram, no external asset needed. Replace with /favicon.ico + real brand mark before launch if you have one. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314140f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' fill='%23faf9f6' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+
+<!-- Open Graph / social preview. og:image points to a placeholder path — add a real 1200x630 image at /og-image.jpg before launch. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MEYVITT">
+<meta property="og:title" content="MEYVITT — Business, Finance & Technology Advisory">
+<meta property="og:description" content="We help growing businesses understand their numbers, improve their operations, and use technology to grow smarter.">
+<meta property="og:image" content="/og-image.jpg">
+<meta property="og:url" content="https://www.meyvitt.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MEYVITT — Business, Finance & Technology Advisory">
+<meta name="twitter:description" content="We help growing businesses understand their numbers, improve their operations, and use technology to grow smarter.">
+<meta name="twitter:image" content="/og-image.jpg">
+<link rel="canonical" href="https://www.meyvitt.com/">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Structured data: helps search engines and AI assistants understand who MEYVITT is -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "MEYVITT",
+  "description": "MEYVITT helps growing businesses understand their numbers, improve their operations, and use technology to grow smarter.",
+  "url": "https://www.meyvitt.com/",
+  "email": "hello@meyvitt.com",
+  "areaServed": ["IN", "US", "GB"],
+  "knowsAbout": ["Business strategy", "Market research", "Financial analysis", "Forecasting", "Business automation", "AI implementation", "Dashboards"],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "MEYVITT Business", "description": "Strategy, market research and business analysis." } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "MEYVITT Finance", "description": "Financial analysis, forecasting, cost and profitability." } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "MEYVITT Technology", "description": "AI, automation, websites, data and dashboards." } }
+  ]
+}
+</script>
 <style>
   :root{
     --ink:#14140f;
@@ -31,6 +67,15 @@
   img{max-width:100%; display:block;}
   .wrap{max-width:1180px; margin:0 auto; padding:0 40px;}
   ::selection{background:var(--forest); color:var(--paper);}
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--forest); outline-offset:3px; border-radius:2px;
+  }
+  .skip-link{
+    position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper);
+    padding:14px 22px; z-index:999; font-family:var(--mono); font-size:13px;
+  }
+  .skip-link:focus{left:16px; top:16px;}
 
   .eyebrow{
     font-family:var(--mono); font-size:11.5px; letter-spacing:0.13em; text-transform:uppercase;
@@ -132,6 +177,7 @@
   .process-step .p-num{font-family:var(--mono); font-size:11px; color:var(--ink-50); margin-bottom:10px; display:block;}
   .process-step h3{font-size:18px; margin-bottom:10px;}
   .process-step p{font-size:13.5px; color:var(--ink-70);}
+  .pricing-note{margin-top:56px; padding-top:28px; border-top:1px solid var(--line); font-family:var(--mono); font-size:12.5px; color:var(--ink-50); max-width:520px;}
 
   /* HEALTH CHECK */
   .health{background:var(--ink); color:var(--paper);}
@@ -187,10 +233,32 @@
 
   /* CONTACT / FOOTER */
   .contact{background:var(--paper-2); border-top:1px solid var(--line);}
-  .contact-inner{text-align:center; max-width:620px; margin:0 auto;}
-  .contact h2{font-size:clamp(30px,4.4vw,46px); margin-bottom:20px;}
-  .contact p{color:var(--ink-70); font-size:15.5px; margin-bottom:14px;}
-  .contact .health-note{margin:0 auto 34px; text-align:center; color:var(--ink-50);}
+  .contact h2{font-size:clamp(28px,4vw,42px); margin-bottom:18px;}
+  .contact p{color:var(--ink-70); font-size:15.5px;}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start;}
+  .contact-facts{list-style:none; margin-top:36px; border-top:1px solid var(--line);}
+  .contact-facts li{padding:16px 0; border-bottom:1px solid var(--line);}
+  .contact-facts b{display:block; font-family:var(--mono); font-size:11px; letter-spacing:0.07em; text-transform:uppercase; color:var(--forest); margin-bottom:6px;}
+  .contact-facts span{font-size:13.5px; color:var(--ink-70);}
+  .contact-facts a{text-decoration:underline; text-underline-offset:2px;}
+  .contact-alt{margin-top:24px; font-size:14px;}
+  .contact-alt a{text-decoration:underline; text-underline-offset:2px;}
+
+  .contact-form{background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:34px;}
+  .form-row{margin-bottom:18px;}
+  .form-row label{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-70); margin-bottom:8px;}
+  .form-row .optional{text-transform:none; letter-spacing:0; color:var(--ink-50);}
+  .form-row input, .form-row textarea{
+    width:100%; font-family:var(--body); font-size:15px; color:var(--ink);
+    background:var(--paper); border:1px solid var(--line-strong); border-radius:2px;
+    padding:12px 14px; resize:vertical;
+  }
+  .form-row input:focus, .form-row textarea:focus{border-color:var(--forest);}
+  .contact-form .btn-primary{width:100%; justify-content:center; border-radius:2px; cursor:pointer;}
+  .form-status{margin-top:14px; font-size:13.5px; min-height:18px;}
+  .form-status.success{color:var(--forest);}
+  .form-status.error{color:#a13a2b;}
+  .form-fineprint{margin-top:16px; font-size:12px; color:var(--ink-50); text-align:center;}
   footer{padding:44px 0; border-top:1px solid var(--line);}
   .foot-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
   .foot-links{display:flex; gap:26px; font-size:13px; font-family:var(--mono);}
@@ -213,6 +281,7 @@
     .health-inner{grid-template-columns:1fr; gap:40px;}
     .lab-grid{grid-template-columns:1fr;}
     .about-inner{grid-template-columns:1fr; gap:40px;}
+    .contact-grid{grid-template-columns:1fr; gap:44px;}
     section{padding:80px 0;}
     .insight-row{flex-wrap:wrap;}
   }
@@ -225,6 +294,8 @@
 </style>
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header>
   <nav>
@@ -250,13 +321,14 @@
 </header>
 
 <main id="top">
+  <div id="main-content"></div>
 
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <div class="hero-grid">
         <div class="reveal">
-          <div class="eyebrow">Business · Finance · Technology</div>
+          <div class="eyebrow">Business · Technology · Growth</div>
           <h1>Your Business Has Potential. Let's Build It.</h1>
           <p class="sub">MEYVITT combines business intelligence, financial thinking and technology to help growing businesses make smarter decisions and move faster.</p>
           <div class="hero-ctas">
@@ -266,7 +338,7 @@
         </div>
         <div class="hero-chart reveal">
           <div class="chart-label"><span>Operating Margin — Illustrative Client</span><b>+18.4%</b></div>
-          <svg viewBox="0 0 460 220" preserveAspectRatio="none">
+          <svg viewBox="0 0 460 220" preserveAspectRatio="none" role="img" aria-label="Illustrative chart showing operating margin improving after a MEYVITT engagement, from a lower starting line to a higher ending point">
             <line x1="0" y1="20" x2="460" y2="20" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
             <line x1="0" y1="75" x2="460" y2="75" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
             <line x1="0" y1="130" x2="460" y2="130" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
@@ -368,6 +440,7 @@
         <div class="process-step"><div class="dot"></div><span class="p-num">Step 03</span><h3>Delivery sprint</h3><p>Focused work against the agreed scope, with regular check-ins — not silence until the deadline.</p></div>
         <div class="process-step"><div class="dot"></div><span class="p-num">Step 04</span><h3>Handover & support</h3><p>Documentation, training if needed, and a defined support window after delivery.</p></div>
       </div>
+      <p class="pricing-note">Pricing is quoted per engagement in your preferred currency — INR, USD or GBP — and confirmed before any work begins.</p>
     </div>
   </section>
 
@@ -461,12 +534,49 @@
 
   <!-- CONTACT -->
   <section class="contact" id="contact">
-    <div class="wrap contact-inner reveal">
-      <div class="eyebrow" style="justify-content:center;">Get Started</div>
-      <h2>Start a conversation.</h2>
-      <p>Tell us where the business is stuck. We'll tell you honestly whether we can help, and what it would take.</p>
-      <div class="health-note">All discussions are confidential. NDAs available on request. We typically reply within one business day.</div>
-      <a href="mailto:hello@meyvitt.com" class="btn btn-primary">hello@meyvitt.com</a>
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-copy reveal">
+          <div class="eyebrow">Get Started</div>
+          <h2>Start a conversation.</h2>
+          <p>Tell us where the business is stuck. We'll tell you honestly whether we can help, and what it would take.</p>
+
+          <ul class="contact-facts">
+            <li><b>Confidentiality</b><span>Every conversation is confidential. NDAs signed on request before any material is shared.</span></li>
+            <li><b>Hours</b><span>Based in India (IST), with working overlap for US and UK business hours.</span></li>
+            <li><b>Response time</b><span>We reply within one business day, every time.</span></li>
+            <li><b>Privacy</b><span>Form details are used only to respond to your enquiry. See our <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms</a>.</span></li>
+          </ul>
+
+          <p class="contact-alt">Prefer email? Write to <a href="mailto:hello@meyvitt.com">hello@meyvitt.com</a> directly.</p>
+        </div>
+
+        <form class="contact-form reveal" id="contactForm" novalidate>
+          <div class="form-row">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="form-row">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="form-row">
+            <label for="cf-company">Company <span class="optional">(optional)</span></label>
+            <input type="text" id="cf-company" name="company" autocomplete="organization">
+          </div>
+          <div class="form-row">
+            <label for="cf-message">What's the business challenge?</label>
+            <textarea id="cf-message" name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="cf-submit">Send Message</button>
+          <p class="form-status" id="cf-status" role="status" aria-live="polite"></p>
+          <p class="form-fineprint">
+            <!-- FORM BACKEND: this posts to a placeholder endpoint. Replace FORM_ENDPOINT below
+                 with a real form service (e.g. Formspree, Basin) or your own API route before launch. -->
+            We don't sell or share your details. Ever.
+          </p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -482,6 +592,8 @@
       <a href="#insights">Insights</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
     </div>
     <span class="foot-small">© 2026 MEYVITT</span>
   </div>
@@ -528,6 +640,63 @@
   }
   ids.forEach(id => sliders[id].addEventListener('input', updateHealth));
   updateHealth();
+
+  // Contact form
+  // Replace FORM_ENDPOINT with a real form backend before launch, e.g:
+  //   - Formspree: 'https://formspree.io/f/your-form-id'
+  //   - Basin, or your own serverless endpoint
+  const FORM_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID';
+  const form = document.getElementById('contactForm');
+  const statusEl = document.getElementById('cf-status');
+  const submitBtn = document.getElementById('cf-submit');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = 'form-status';
+    statusEl.textContent = '';
+
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!name || !emailOk || !message) {
+      statusEl.textContent = 'Please fill in your name, a valid email, and a short message.';
+      statusEl.className = 'form-status error';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          company: document.getElementById('cf-company').value.trim(),
+          message
+        })
+      });
+
+      if (res.ok) {
+        statusEl.textContent = "Thanks — we'll reply within one business day.";
+        statusEl.className = 'form-status success';
+        form.reset();
+        updateHealth();
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (err) {
+      statusEl.textContent = "Something went wrong sending that. Please email hello@meyvitt.com directly.";
+      statusEl.className = 'form-status error';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    }
+  });
 </script>
 
 </body>
