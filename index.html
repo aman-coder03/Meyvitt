@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEYVITT — Business, Finance & Technology Advisory</title>
+<meta name="description" content="MEYVITT helps growing businesses understand their numbers, improve operations, and use technology to grow smarter. Business strategy, financial analysis and technology delivery, in one team.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14140f;
+    --ink-70:#4c4c44;
+    --ink-50:#7a7a70;
+    --paper:#faf9f6;
+    --paper-2:#f0efe9;
+    --paper-3:#e4e2d9;
+    --forest:#1e4a3a;
+    --forest-dim:#2c5c48;
+    --sage:#b9c9bd;
+    --line:rgba(20,20,15,0.13);
+    --line-strong:rgba(20,20,15,0.24);
+    --display:'Newsreader', serif;
+    --mono:'IBM Plex Mono', monospace;
+    --body:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper); color:var(--ink); font-family:var(--body); line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 40px;}
+  ::selection{background:var(--forest); color:var(--paper);}
+
+  .eyebrow{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.13em; text-transform:uppercase;
+    color:var(--forest); display:flex; align-items:center; gap:10px; margin-bottom:20px;
+  }
+  .eyebrow::before{content:''; width:20px; height:1px; background:var(--forest);}
+  h1,h2,h3{font-family:var(--display); font-weight:500; letter-spacing:-0.005em; color:var(--ink);}
+  .num{font-family:var(--mono);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* NAV */
+  header{position:sticky; top:0; z-index:200; background:rgba(250,249,246,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:22px 40px; max-width:1180px; margin:0 auto;}
+  .logo{font-family:var(--display); font-weight:600; font-size:21px; letter-spacing:0.01em;}
+  .logo em{font-style:normal; color:var(--forest);}
+  .nav-links{display:flex; gap:38px; font-size:14px; font-weight:500;}
+  .nav-links a{opacity:0.7; transition:opacity .2s; position:relative;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{font-family:var(--mono); font-size:12.5px; font-weight:500; border:1px solid var(--ink); padding:10px 20px; border-radius:2px; transition:background .2s, color .2s;}
+  .nav-cta:hover{background:var(--ink); color:var(--paper);}
+  .burger{display:none; flex-direction:column; gap:5px; cursor:pointer; border:none; background:none; padding:6px;}
+  .burger span{width:22px; height:1.5px; background:var(--ink); display:block;}
+  .mobile-menu{display:none;}
+
+  @media (max-width: 860px){
+    .nav-links, .nav-cta{display:none;}
+    .burger{display:flex;}
+    .mobile-menu{
+      display:none; position:fixed; inset:0; top:66px; background:var(--paper); z-index:190;
+      padding:36px 40px; flex-direction:column; gap:26px; font-size:20px; font-family:var(--display);
+    }
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{border-bottom:1px solid var(--line); padding-bottom:18px;}
+    .mobile-menu .nav-cta{display:inline-flex; margin-top:6px;}
+  }
+
+  /* HERO */
+  .hero{padding:88px 0 0;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;}
+  .hero h1{font-size:clamp(36px, 4.6vw, 58px); line-height:1.08; max-width:600px;}
+  .hero p.sub{font-size:17.5px; color:var(--ink-70); max-width:480px; margin:26px 0 38px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{font-family:var(--mono); font-size:13px; font-weight:500; padding:14px 26px; border-radius:2px; display:inline-flex; align-items:center; gap:8px; transition:transform .18s, background .18s, color .18s, border-color .18s;}
+  .btn-primary{background:var(--ink); color:var(--paper); border:1px solid var(--ink);}
+  .btn-primary:hover{background:var(--forest); border-color:var(--forest); transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line-strong); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink); transform:translateY(-2px);}
+
+  .hero-chart{background:var(--paper-2); border:1px solid var(--line); border-radius:4px; padding:26px 26px 20px;}
+  .hero-chart .chart-label{display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--ink-50); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:16px;}
+  .hero-chart .chart-label b{color:var(--forest); font-weight:500;}
+  .hero-chart svg{width:100%; height:auto; display:block;}
+  .chart-foot{display:flex; justify-content:space-between; margin-top:12px; font-family:var(--mono); font-size:10.5px; color:var(--ink-50);}
+
+  /* TRUST STRIP */
+  .trust{border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:80px;}
+  .trust-grid{display:grid; grid-template-columns:repeat(4,1fr);}
+  .trust-item{padding:28px 32px; border-right:1px solid var(--line); display:flex; gap:14px; align-items:flex-start;}
+  .trust-item:last-child{border-right:none;}
+  .trust-item .t-num{font-family:var(--mono); font-size:12px; color:var(--forest); flex-shrink:0; padding-top:2px;}
+  .trust-item p{font-size:13.5px; color:var(--ink-70); line-height:1.45;}
+
+  section{padding:120px 0;}
+  .section-head{max-width:660px; margin-bottom:60px;}
+  .section-head h2{font-size:clamp(27px,3.6vw,38px); line-height:1.16;}
+  .section-head p{color:var(--ink-70); font-size:16px; margin-top:16px;}
+
+  /* METHOD */
+  .method{background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .method-statement{font-family:var(--display); font-size:clamp(24px,3.4vw,36px); margin-bottom:64px; max-width:760px;}
+  .method-statement .arrow{color:var(--forest);}
+  .method-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .method-card{background:var(--paper-2); padding:34px 26px;}
+  .method-card .index{font-family:var(--mono); font-size:12px; color:var(--forest); margin-bottom:20px; display:block;}
+  .method-card h3{font-size:20px; margin-bottom:14px;}
+  .method-card ul{list-style:none; font-size:13.5px; color:var(--ink-70);}
+  .method-card li{padding:6px 0; border-top:1px solid var(--line);}
+  .method-card li:first-child{border-top:none;}
+
+  /* PILLARS */
+  .pillars-grid{display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line);}
+  .pillar{padding:46px 38px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .pillar:last-child{border-right:none;}
+  .pillar .tag{font-family:var(--mono); font-size:11.5px; color:var(--forest); letter-spacing:0.07em; text-transform:uppercase; margin-bottom:16px; display:block;}
+  .pillar h3{font-size:24px; margin-bottom:10px;}
+  .pillar p.line{color:var(--ink-70); font-size:14.5px; margin-bottom:22px;}
+  .pillar ul{list-style:none; font-size:14px;}
+  .pillar li{padding:8px 0; border-top:1px solid var(--line); color:var(--ink-70);}
+  .pillar li:first-child{border-top:none;}
+
+  /* ENGAGEMENT PROCESS */
+  .process-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:32px; position:relative;}
+  .process-grid::before{content:''; position:absolute; top:13px; left:5%; right:5%; height:1px; background:var(--line-strong); z-index:0;}
+  .process-step{position:relative; z-index:1;}
+  .process-step .dot{width:9px; height:9px; border-radius:50%; background:var(--forest); margin-bottom:22px;}
+  .process-step .p-num{font-family:var(--mono); font-size:11px; color:var(--ink-50); margin-bottom:10px; display:block;}
+  .process-step h3{font-size:18px; margin-bottom:10px;}
+  .process-step p{font-size:13.5px; color:var(--ink-70);}
+
+  /* HEALTH CHECK */
+  .health{background:var(--ink); color:var(--paper);}
+  .health .eyebrow{color:var(--sage);}
+  .health .eyebrow::before{background:var(--sage);}
+  .health h2{color:var(--paper);}
+  .health-inner{display:grid; grid-template-columns:1fr 1fr; gap:76px; align-items:start;}
+  .health-copy p{color:rgba(250,249,246,0.62); font-size:15.5px; margin:18px 0 30px; max-width:420px;}
+  .health-note{font-size:12.5px; color:rgba(250,249,246,0.42); font-family:var(--mono); margin-top:30px; max-width:420px; line-height:1.6;}
+  .health-panel{background:#1c1c17; border:1px solid rgba(250,249,246,0.13); padding:34px; border-radius:4px;}
+  .hc-row{margin-bottom:22px;}
+  .hc-row label{display:flex; justify-content:space-between; font-family:var(--mono); font-size:12px; letter-spacing:0.03em; text-transform:uppercase; color:rgba(250,249,246,0.55); margin-bottom:10px;}
+  .hc-row label span{color:var(--sage);}
+  input[type=range]{-webkit-appearance:none; width:100%; height:2px; background:rgba(250,249,246,0.22); outline:none; border-radius:2px;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:var(--sage); cursor:pointer; border:2px solid #14140f;}
+  input[type=range]::-moz-range-thumb{width:13px; height:13px; border-radius:50%; background:var(--sage); border:2px solid #14140f; cursor:pointer;}
+  .hc-result{margin-top:28px; padding-top:24px; border-top:1px solid rgba(250,249,246,0.13); display:flex; align-items:center; gap:20px;}
+  .score-num{font-family:var(--mono); font-size:40px; color:var(--sage); line-height:1;}
+  .score-num small{font-size:15px; opacity:0.5;}
+  .hc-opportunity{font-size:13.5px; color:rgba(250,249,246,0.72); flex:1;}
+  .hc-opportunity b{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; color:var(--sage);}
+  .health-panel .btn-primary{margin-top:24px; width:100%; justify-content:center; background:var(--sage); color:#14140f; border-color:var(--sage);}
+  .health-panel .btn-primary:hover{background:var(--paper); border-color:var(--paper);}
+
+  /* LAB */
+  .lab-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .lab-card{padding:32px; background:var(--paper); transition:background .2s;}
+  .lab-card:hover{background:var(--paper-2);}
+  .lab-card .lab-id{font-family:var(--mono); font-size:11.5px; color:var(--forest); margin-bottom:16px; display:block;}
+  .lab-card h3{font-size:19px; margin-bottom:20px; line-height:1.3;}
+  .lab-field{margin-bottom:14px;}
+  .lab-field b{font-family:var(--mono); font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:var(--ink-50); display:block; margin-bottom:5px;}
+  .lab-field span{font-size:13.5px; color:var(--ink-70);}
+
+  /* INSIGHTS */
+  .insights-list{border-top:1px solid var(--line);}
+  .insight-row{display:flex; align-items:center; justify-content:space-between; gap:24px; padding:26px 0; border-bottom:1px solid var(--line); transition:padding-left .2s;}
+  .insight-row:hover{padding-left:8px;}
+  .insight-row .cat{font-family:var(--mono); font-size:11px; letter-spacing:0.07em; text-transform:uppercase; color:var(--forest); width:110px; flex-shrink:0;}
+  .insight-row h3{font-size:18px; font-weight:500; flex:1;}
+  .insight-row .arrow{font-family:var(--mono); opacity:0.35; font-size:17px;}
+
+  /* ABOUT */
+  .about-inner{display:grid; grid-template-columns:0.9fr 1.1fr; gap:80px;}
+  .about-statement{font-family:var(--display); font-size:clamp(23px,2.8vw,30px); line-height:1.35;}
+  .about-statement .accent{color:var(--forest);}
+  .about-text{color:var(--ink-70); font-size:14.5px; margin-top:22px; max-width:420px;}
+  .founders{display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line);}
+  .founder{background:var(--paper); padding:30px;}
+  .founder .role{font-family:var(--mono); font-size:11px; letter-spacing:0.07em; text-transform:uppercase; color:var(--forest); margin-bottom:8px; display:block;}
+  .founder h3{font-size:19px; margin-bottom:10px;}
+  .founder p{color:var(--ink-70); font-size:14px;}
+
+  /* CONTACT / FOOTER */
+  .contact{background:var(--paper-2); border-top:1px solid var(--line);}
+  .contact-inner{text-align:center; max-width:620px; margin:0 auto;}
+  .contact h2{font-size:clamp(30px,4.4vw,46px); margin-bottom:20px;}
+  .contact p{color:var(--ink-70); font-size:15.5px; margin-bottom:14px;}
+  .contact .health-note{margin:0 auto 34px; text-align:center; color:var(--ink-50);}
+  footer{padding:44px 0; border-top:1px solid var(--line);}
+  .foot-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  .foot-links{display:flex; gap:26px; font-size:13px; font-family:var(--mono);}
+  .foot-links a{opacity:0.6; transition:opacity .2s;}
+  .foot-links a:hover{opacity:1;}
+  .foot-small{font-family:var(--mono); font-size:11.5px; color:var(--ink-50);}
+
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width: 940px){
+    .hero-grid{grid-template-columns:1fr;}
+    .trust-grid{grid-template-columns:1fr 1fr;}
+    .trust-item{border-bottom:1px solid var(--line);}
+    .method-grid{grid-template-columns:1fr 1fr;}
+    .pillars-grid{grid-template-columns:1fr;}
+    .pillar{border-right:none;}
+    .process-grid{grid-template-columns:1fr 1fr; row-gap:40px;}
+    .process-grid::before{display:none;}
+    .health-inner{grid-template-columns:1fr; gap:40px;}
+    .lab-grid{grid-template-columns:1fr;}
+    .about-inner{grid-template-columns:1fr; gap:40px;}
+    section{padding:80px 0;}
+    .insight-row{flex-wrap:wrap;}
+  }
+  @media (max-width: 560px){
+    .method-grid, .process-grid, .trust-grid{grid-template-columns:1fr;}
+    .wrap{padding:0 22px;}
+    nav{padding:18px 22px;}
+    .hero{padding-top:64px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#top" class="logo">MEYVITT<em>.</em></a>
+    <div class="nav-links">
+      <a href="#solutions">Solutions</a>
+      <a href="#process">Process</a>
+      <a href="#lab">Lab</a>
+      <a href="#insights">Insights</a>
+      <a href="#about">About</a>
+    </div>
+    <a href="#contact" class="nav-cta">Start a Conversation →</a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#solutions">Solutions</a>
+    <a href="#process">Process</a>
+    <a href="#lab">Lab</a>
+    <a href="#insights">Insights</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="btn btn-primary">Start a Conversation →</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">Business · Finance · Technology</div>
+          <h1>Your Business Has Potential. Let's Build It.</h1>
+          <p class="sub">MEYVITT combines business intelligence, financial thinking and technology to help growing businesses make smarter decisions and move faster.</p>
+          <div class="hero-ctas">
+            <a href="#contact" class="btn btn-primary">Work With Us</a>
+            <a href="#solutions" class="btn btn-ghost">Explore What We Do</a>
+          </div>
+        </div>
+        <div class="hero-chart reveal">
+          <div class="chart-label"><span>Operating Margin — Illustrative Client</span><b>+18.4%</b></div>
+          <svg viewBox="0 0 460 220" preserveAspectRatio="none">
+            <line x1="0" y1="20" x2="460" y2="20" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
+            <line x1="0" y1="75" x2="460" y2="75" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
+            <line x1="0" y1="130" x2="460" y2="130" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
+            <line x1="0" y1="185" x2="460" y2="185" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
+            <path d="M0,178 L65,168 L130,182 L195,140 L260,148 L325,96 L390,84 L460,34" fill="none" stroke="rgba(20,20,15,0.28)" stroke-width="1.5" stroke-dasharray="3 4"/>
+            <path id="growthLine" d="M0,190 L65,175 L130,178 L195,150 L260,155 L325,110 L390,90 L460,42" fill="none" stroke="#1e4a3a" stroke-width="2.5"/>
+            <circle cx="460" cy="42" r="4.5" fill="#1e4a3a"/>
+          </svg>
+          <div class="chart-foot"><span>Before engagement</span><span>After 4D framework</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust">
+      <div class="wrap" style="padding:0;">
+        <div class="trust-grid">
+          <div class="trust-item"><span class="t-num num">01</span><p>Direct access to the people doing the work — no account managers, no hand-offs.</p></div>
+          <div class="trust-item"><span class="t-num num">02</span><p>Confidentiality by default. Happy to sign an NDA before any material is shared.</p></div>
+          <div class="trust-item"><span class="t-num num">03</span><p>Fixed-scope engagements with a defined deliverable, timeline and price.</p></div>
+          <div class="trust-item"><span class="t-num num">04</span><p>We work across time zones and reply within one business day.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="method">
+    <div class="wrap">
+      <div class="eyebrow reveal">The MEYVITT Method</div>
+      <h2 class="method-statement reveal">Understand <span class="arrow">→</span> Strategize <span class="arrow">→</span> Build <span class="arrow">→</span> Grow</h2>
+      <div class="method-grid reveal">
+        <div class="method-card">
+          <span class="index num">01 — Discover</span>
+          <h3>Understand the business</h3>
+          <ul><li>Revenue</li><li>Customers</li><li>Costs</li><li>Competition</li><li>Operations</li></ul>
+        </div>
+        <div class="method-card">
+          <span class="index num">02 — Diagnose</span>
+          <h3>Find what's actually wrong</h3>
+          <ul><li>Where you're losing money</li><li>Where you're losing time</li><li>What isn't working</li></ul>
+        </div>
+        <div class="method-card">
+          <span class="index num">03 — Develop</span>
+          <h3>Build the solution</h3>
+          <ul><li>Strategy & financial model</li><li>Dashboard</li><li>Website</li><li>Automation & AI workflow</li></ul>
+        </div>
+        <div class="method-card">
+          <span class="index num">04 — Deliver</span>
+          <h3>Measure the result</h3>
+          <ul><li>Efficiency</li><li>Revenue</li><li>Cost savings</li><li>Customer experience</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS -->
+  <section id="solutions">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">What We Do</div>
+        <h2>Business tells you what to do. Finance tells you whether it's worth doing. Technology helps you do it efficiently.</h2>
+      </div>
+    </div>
+    <div class="wrap" style="padding:0;">
+      <div class="pillars-grid reveal">
+        <div class="pillar">
+          <span class="tag">MEYVITT Business</span>
+          <h3>Make better decisions.</h3>
+          <p class="line">Understand the market before you commit resources to it.</p>
+          <ul><li>Market research</li><li>Competitor analysis</li><li>Business strategy</li><li>Business planning</li><li>Process analysis</li></ul>
+        </div>
+        <div class="pillar">
+          <span class="tag">MEYVITT Finance</span>
+          <h3>Know your numbers.</h3>
+          <p class="line">Growth without margin discipline is difficult to sustain.</p>
+          <ul><li>Financial analysis</li><li>Budgeting</li><li>Forecasting</li><li>Profitability analysis</li><li>Financial dashboards</li></ul>
+        </div>
+        <div class="pillar">
+          <span class="tag">MEYVITT Technology</span>
+          <h3>Work smarter.</h3>
+          <p class="line">Manual processes are decisions waiting to be automated.</p>
+          <ul><li>Website development</li><li>Business automation</li><li>AI implementation</li><li>Data dashboards</li><li>Digital solutions</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" style="border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">How An Engagement Works</div>
+        <h2>A clear process, agreed upfront.</h2>
+        <p>No open-ended retainers by default. You know what you're getting, by when, and what it costs before we start.</p>
+      </div>
+      <div class="process-grid reveal">
+        <div class="process-step"><div class="dot"></div><span class="p-num">Step 01</span><h3>Discovery call</h3><p>30 minutes, no cost. We listen, ask questions, and tell you honestly if we're a fit.</p></div>
+        <div class="process-step"><div class="dot"></div><span class="p-num">Step 02</span><h3>Proposal & scope</h3><p>A written scope, timeline and fixed price. Nothing starts until you approve it.</p></div>
+        <div class="process-step"><div class="dot"></div><span class="p-num">Step 03</span><h3>Delivery sprint</h3><p>Focused work against the agreed scope, with regular check-ins — not silence until the deadline.</p></div>
+        <div class="process-step"><div class="dot"></div><span class="p-num">Step 04</span><h3>Handover & support</h3><p>Documentation, training if needed, and a defined support window after delivery.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HEALTH CHECK -->
+  <section class="health">
+    <div class="wrap health-inner">
+      <div class="health-copy reveal">
+        <div class="eyebrow">Business Health Check</div>
+        <h2>Is your business ready to scale?</h2>
+        <p>A quick, honest self-assessment across the four areas that most often decide whether growth is profitable or just busy.</p>
+        <div class="health-note">This is a self-assessment tool, not a formal audit. It gives directional guidance only — a full diagnostic happens in the Discover step of an engagement.</div>
+      </div>
+      <div class="health-panel reveal">
+        <div class="hc-row"><label>Finance <span id="v-finance">50</span></label><input type="range" min="0" max="100" value="50" id="s-finance"></div>
+        <div class="hc-row"><label>Operations <span id="v-operations">50</span></label><input type="range" min="0" max="100" value="50" id="s-operations"></div>
+        <div class="hc-row"><label>Technology <span id="v-technology">50</span></label><input type="range" min="0" max="100" value="50" id="s-technology"></div>
+        <div class="hc-row"><label>Growth <span id="v-growth">50</span></label><input type="range" min="0" max="100" value="50" id="s-growth"></div>
+        <div class="hc-result">
+          <div class="score-num" id="score-total">50<small>/100</small></div>
+          <div class="hc-opportunity"><b>Biggest opportunity</b><span id="opportunity-text">Balanced across the board — keep an eye on all four.</span></div>
+        </div>
+        <a href="#contact" class="btn btn-primary">Book a 20-Minute Discussion</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section id="lab">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">MEYVITT Lab</div>
+        <h2>Real problems, worked through end to end.</h2>
+        <p>Before we had clients, we picked real business problems and solved them properly. These are those projects — not fabricated case studies.</p>
+      </div>
+      <div class="lab-grid reveal">
+        <div class="lab-card">
+          <span class="lab-id num">Lab 001 — Local Café</span>
+          <h3>Which products actually make money?</h3>
+          <div class="lab-field"><b>Problem</b><span>Owner had no visibility into per-item margins.</span></div>
+          <div class="lab-field"><b>Analysis</b><span>Revenue, costs, margins, customer behaviour.</span></div>
+          <div class="lab-field"><b>Solution</b><span>Financial dashboard and product profitability model.</span></div>
+        </div>
+        <div class="lab-card">
+          <span class="lab-id num">Lab 002 — E-commerce Startup</span>
+          <h3>Too much manual work, too little time.</h3>
+          <div class="lab-field"><b>Problem</b><span>Order and inventory tracking done by hand daily.</span></div>
+          <div class="lab-field"><b>Analysis</b><span>Mapped every repeated manual process.</span></div>
+          <div class="lab-field"><b>Solution</b><span>Automation workflow and live operations dashboard.</span></div>
+        </div>
+        <div class="lab-card">
+          <span class="lab-id num">Lab 003 — Travel Business</span>
+          <h3>Bookings living in spreadsheets and chat threads.</h3>
+          <div class="lab-field"><b>Problem</b><span>Manual booking and customer management.</span></div>
+          <div class="lab-field"><b>Analysis</b><span>Traced the booking journey end to end.</span></div>
+          <div class="lab-field"><b>Solution</b><span>Digital workflow and centralised dashboard.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section id="insights">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">MEYVITT Insights</div>
+        <h2>Judgment, in writing.</h2>
+      </div>
+      <div class="insights-list reveal">
+        <a href="#" class="insight-row"><span class="cat">Business</span><h3>Why most small businesses don't actually know their profit</h3><span class="arrow">→</span></a>
+        <a href="#" class="insight-row"><span class="cat">Finance</span><h3>Revenue is growing. So why is cash disappearing?</h3><span class="arrow">→</span></a>
+        <a href="#" class="insight-row"><span class="cat">Technology</span><h3>Five processes to automate before hiring another employee</h3><span class="arrow">→</span></a>
+        <a href="#" class="insight-row"><span class="cat">AI</span><h3>Where AI actually saves a small business money</h3><span class="arrow">→</span></a>
+        <a href="#" class="insight-row"><span class="cat">Startups</span><h3>Looking busy versus actually growing — the difference</h3><span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about-inner">
+      <div class="reveal">
+        <p class="about-statement">Two disciplines. <span class="accent">One team.</span></p>
+        <p class="about-text">MEYVITT was founded on a simple premise: growing businesses shouldn't have to choose between sound business thinking and capable technology delivery. We work as one team across both, and we're building the firm in the open — the same rigor we bring to client work, we apply to our own.</p>
+      </div>
+      <div class="founders reveal">
+        <div class="founder"><span class="role">Business & Finance</span><h3>Strategy and numbers</h3><p>Reads a business through revenue, margin and cash before recommending a single tool or tactic.</p></div>
+        <div class="founder"><span class="role">Technology</span><h3>Systems and delivery</h3><p>Turns a diagnosis into something built — a dashboard, a workflow, a website that actually works.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap contact-inner reveal">
+      <div class="eyebrow" style="justify-content:center;">Get Started</div>
+      <h2>Start a conversation.</h2>
+      <p>Tell us where the business is stuck. We'll tell you honestly whether we can help, and what it would take.</p>
+      <div class="health-note">All discussions are confidential. NDAs available on request. We typically reply within one business day.</div>
+      <a href="mailto:hello@meyvitt.com" class="btn btn-primary">hello@meyvitt.com</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a href="#top" class="logo" style="font-size:16px;">MEYVITT<em>.</em></a>
+    <div class="foot-links">
+      <a href="#solutions">Solutions</a>
+      <a href="#process">Process</a>
+      <a href="#lab">Lab</a>
+      <a href="#insights">Insights</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <span class="foot-small">© 2026 MEYVITT</span>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const burger = document.getElementById('burgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Health check sliders
+  const ids = ['finance','operations','technology','growth'];
+  const sliders = {};
+  ids.forEach(id => sliders[id] = document.getElementById('s-' + id));
+  const opportunityCopy = {
+    finance: "Financial visibility — revenue may be growing without a clear read on real margin.",
+    operations: "Operational efficiency — manual processes are likely absorbing time that should go to growth.",
+    technology: "Technology — a lightweight dashboard or automation could remove recurring manual work.",
+    growth: "Growth strategy — fundamentals look solid; demand generation needs a clearer plan."
+  };
+  function updateHealth(){
+    let total = 0, lowestKey = ids[0], lowestVal = 101;
+    ids.forEach(id => {
+      const val = parseInt(sliders[id].value, 10);
+      document.getElementById('v-' + id).textContent = val;
+      total += val;
+      if (val < lowestVal){ lowestVal = val; lowestKey = id; }
+    });
+    const avg = Math.round(total / ids.length);
+    document.getElementById('score-total').innerHTML = avg + '<small>/100</small>';
+    const vals = ids.map(id => parseInt(sliders[id].value,10));
+    const spread = Math.max(...vals) - Math.min(...vals);
+    document.getElementById('opportunity-text').textContent = spread < 8
+      ? "Balanced across the board — the next step is compounding what's already working."
+      : opportunityCopy[lowestKey];
+  }
+  ids.forEach(id => sliders[id].addEventListener('input', updateHealth));
+  updateHealth();
+</script>
+
+</body>
+</html>
