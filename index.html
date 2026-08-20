@@ -641,27 +641,36 @@
   ids.forEach(id => sliders[id].addEventListener('input', updateHealth));
   updateHealth();
 
-  // Contact form
-  // Replace FORM_ENDPOINT with a real form backend before launch, e.g:
-  //   - Formspree: 'https://formspree.io/f/your-form-id'
-  //   - Basin, or your own serverless endpoint
-  const FORM_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID';
+  // ============================================
+  // MEYVITT CONTACT FORM
+  // ============================================
+
+  const FORM_ENDPOINT =
+    'https://script.google.com/macros/s/AKfycbzpK_wGcDHC32QIy1_SsDyU_mSO8LpOzgt--QQo8YjrDNxfm0D1OXPzH68k2nYRVZ9ybw/exec';
+
   const form = document.getElementById('contactForm');
   const statusEl = document.getElementById('cf-status');
   const submitBtn = document.getElementById('cf-submit');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     statusEl.className = 'form-status';
     statusEl.textContent = '';
 
     const name = document.getElementById('cf-name').value.trim();
     const email = document.getElementById('cf-email').value.trim();
+    const company = document.getElementById('cf-company').value.trim();
     const message = document.getElementById('cf-message').value.trim();
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+    const emailOk =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    // Validation
     if (!name || !emailOk || !message) {
-      statusEl.textContent = 'Please fill in your name, a valid email, and a short message.';
+      statusEl.textContent =
+        'Please fill in your name, a valid email, and a short message.';
+
       statusEl.className = 'form-status error';
       return;
     }
@@ -670,31 +679,48 @@
     submitBtn.textContent = 'Sending…';
 
     try {
-      const res = await fetch(FORM_ENDPOINT, {
+
+      const formData = new URLSearchParams();
+
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('company', company);
+      formData.append('message', message);
+
+      /*
+       * We intentionally use URLSearchParams rather than
+       * application/json so the request remains a simple
+       * browser request and does not require a CORS preflight.
+       */
+
+      await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          company: document.getElementById('cf-company').value.trim(),
-          message
-        })
+        body: formData,
+        mode: 'no-cors'
       });
 
-      if (res.ok) {
-        statusEl.textContent = "Thanks — we'll reply within one business day.";
-        statusEl.className = 'form-status success';
-        form.reset();
-        updateHealth();
-      } else {
-        throw new Error('Submission failed');
-      }
-    } catch (err) {
-      statusEl.textContent = "Something went wrong sending that. Please email hello@meyvitt.com directly.";
+      // Submission sent
+      statusEl.textContent =
+        "Thanks — we've received your message. We'll reply within one business day.";
+
+      statusEl.className = 'form-status success';
+
+      form.reset();
+
+    } catch (error) {
+
+      console.error('Contact form error:', error);
+
+      statusEl.textContent =
+        'Something went wrong sending that. Please email hello@meyvitt.com directly.';
+
       statusEl.className = 'form-status error';
+
     } finally {
+
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send Message';
+
     }
   });
 </script>
