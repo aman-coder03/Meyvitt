@@ -34,6 +34,9 @@
 
     --radius-widget: 22px;
 
+    --widget-w: min(410px, 94vw);
+    --widget-h: clamp(420px, 88dvh, 650px);
+
     --font:
         Inter,
         -apple-system,
@@ -372,8 +375,8 @@ body {
 
     position: fixed;
 
-    right: 24px;
-    bottom: 24px;
+    right: max(24px, env(safe-area-inset-right));
+    bottom: max(24px, env(safe-area-inset-bottom));
 
     width: 62px;
     height: 62px;
@@ -430,8 +433,8 @@ body {
     right: 0;
     bottom: 0;
 
-    width: 410px;
-    height: 650px;
+    width: var(--widget-w);
+    height: var(--widget-h);
 
     background: var(--surface);
 
@@ -957,6 +960,8 @@ body {
 
     height: 48px;
 
+    font-size: max(13px, 16px); /* prevents iOS auto-zoom on focus */
+
     padding:
         0
         16px;
@@ -975,7 +980,7 @@ body {
 
     font-family: inherit;
 
-    font-size: 13px;
+    font-size: 16px;
 
     transition:
         border-color 0.2s ease,
@@ -1535,8 +1540,8 @@ input:focus-visible {
 @media (max-width: 900px) and (min-width: 601px) {
 
     .chat-widget {
-        width: 380px;
-        height: min(600px, 75vh);
+        width: min(380px, 92vw);
+        height: min(600px, 82dvh);
     }
 
     .demo-arrow {
@@ -1597,8 +1602,8 @@ input:focus-visible {
     }
 
     .agent-launcher {
-        right: 16px;
-        bottom: 16px;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: max(16px, env(safe-area-inset-bottom));
         width: 58px;
         height: 58px;
     }
@@ -1642,7 +1647,7 @@ input:focus-visible {
     }
 
     .chat-input-container {
-        padding: 10px 12px 13px;
+        padding: 10px 12px max(13px, env(safe-area-inset-bottom));
     }
 
     .chat-input-container input {
@@ -1671,6 +1676,90 @@ input:focus-visible {
 
     .comparison-image {
         height: 80px;
+    }
+}
+
+
+/* =========================================================
+   SHORT / LANDSCAPE PHONES
+   (prevents header + welcome content from getting
+   squeezed out on landscape mobile)
+   ========================================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .chat-header {
+        min-height: 56px;
+        padding: 10px 16px;
+    }
+
+    .agent-logo {
+        width: 34px;
+        height: 34px;
+    }
+
+    .welcome-icon {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 6px;
+    }
+
+    .welcome-message {
+        padding: 8px 8px 4px;
+    }
+
+    .welcome-message p {
+        margin-bottom: 8px;
+    }
+
+    .chat-messages {
+        padding: 10px 14px;
+        gap: 8px;
+    }
+
+    .quick-actions {
+        padding: 6px 12px;
+    }
+
+    .chat-input-container {
+        padding: 8px 12px max(8px, env(safe-area-inset-bottom));
+    }
+
+    .chat-input-container input,
+    .chat-input-container button {
+        height: 40px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .demo-page h1 {
+        letter-spacing: -1px;
+    }
+
+    .welcome-message h2 {
+        font-size: 16px;
+    }
+
+    .welcome-message p {
+        max-width: 240px;
+        font-size: 11.5px;
+    }
+
+    .quick-action {
+        padding: 7px 10px;
+        font-size: 10.5px;
+    }
+
+    .agent-launcher {
+        width: 54px;
+        height: 54px;
+        font-size: 20px;
     }
 }
 
