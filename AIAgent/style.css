@@ -960,8 +960,6 @@ body {
 
     height: 48px;
 
-    font-size: max(13px, 16px); /* prevents iOS auto-zoom on focus */
-
     padding:
         0
         16px;
