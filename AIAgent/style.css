@@ -121,10 +121,11 @@ body {
 
 .demo-arrow {
     position: fixed;
-    right: 90px;
-    bottom: 50px;
+    right: clamp(40px, 8vw, 110px);
+    bottom: clamp(40px, 7vh, 60px);
     width: clamp(220px, 26vw, 460px);
-    height: clamp(110px, 15vh, 200px);
+    aspect-ratio: 460 / 200;
+    height: auto;
     pointer-events: none;
     z-index: 999;
 }
