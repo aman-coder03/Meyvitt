@@ -1610,12 +1610,11 @@ input:focus-visible {
 
     .chat-widget {
         width: 100vw;
-        height: 100dvh;
-        max-height: none;
+        height: calc(var(--app-vh, 100dvh) - max(28px, env(safe-area-inset-top) + 14px));
         right: 0;
         bottom: 0;
-        border-radius: 0;
         border: none;
+        /* keeps the top-rounded corners from the default rule instead of squaring them off */
     }
 
     .chat-header {
@@ -1761,6 +1760,32 @@ input:focus-visible {
         height: 54px;
         font-size: 20px;
     }
+}
+
+
+/* =========================================================
+   MOBILE BACKDROP
+   ========================================================= */
+
+.chat-backdrop {
+    display: none;
+}
+
+@media (max-width: 600px) {
+
+    body:has(#chatWidget:not(.hidden)) .chat-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 9997;
+        animation: backdropIn 0.25s ease;
+    }
+}
+
+@keyframes backdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 
