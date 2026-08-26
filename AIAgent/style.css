@@ -123,8 +123,8 @@ body {
     position: fixed;
     right: 90px;
     bottom: 50px;
-    width: 460px;
-    height: 200px;
+    width: clamp(220px, 26vw, 460px);
+    height: clamp(110px, 15vh, 200px);
     pointer-events: none;
     z-index: 999;
 }
@@ -1528,65 +1528,149 @@ input:focus-visible {
 
 
 /* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) and (min-width: 601px) {
+
+    .chat-widget {
+        width: 380px;
+        height: min(600px, 75vh);
+    }
+
+    .demo-arrow {
+        right: 60px;
+        bottom: 100px;
+        width: clamp(180px, 30vw, 300px);
+        height: clamp(90px, 14vh, 150px);
+    }
+
+    .demo-arrow span {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+
+    .agent-launcher {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+
+/* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
 
-    .chat-widget {
-
-        width: 100vw;
-
-        height: 100vh;
-
-        max-height: none;
-
-        right: 0;
-
-        bottom: 0;
-
-        border-radius: 0;
-
-        border: none;
-    }
-
-
-    .chat-header {
-
-        min-height: 76px;
-    }
-
-
-    .agent-launcher {
-
-        right: 16px;
-
-        bottom: 16px;
-
-        width: 58px;
-
-        height: 58px;
-    }
-
-
-    .message {
-
-        max-width: 88%;
-    }
-
-
     .demo-page {
-
-        padding:
-            25px;
+        padding: 20px 16px;
     }
-
 
     .demo-page h1 {
-
         letter-spacing: -2px;
     }
 
+    .demo-page p {
+        font-size: 15px;
+    }
+
+    .demo-arrow {
+        right: 20px;
+        bottom: 88px;
+        width: 90px;
+        height: 60px;
+    }
+
+    .demo-arrow svg {
+        display: none;
+    }
+
+    .demo-arrow span {
+        top: auto;
+        bottom: 0;
+        left: auto;
+        right: 0;
+        font-size: 11px;
+        padding: 4px 9px;
+    }
+
+    .agent-launcher {
+        right: 16px;
+        bottom: 16px;
+        width: 58px;
+        height: 58px;
+    }
+
+    .chat-widget {
+        width: 100vw;
+        height: 100dvh;
+        max-height: none;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+        border: none;
+    }
+
+    .chat-header {
+        min-height: 68px;
+        padding: 14px 16px;
+    }
+
+    .agent-logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+    }
+
+    .chat-messages {
+        padding: 16px 14px;
+    }
+
+    .message {
+        max-width: 88%;
+    }
+
+    .quick-actions {
+        padding: 9px 12px;
+    }
+
+    .quick-action {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .chat-input-container {
+        padding: 10px 12px 13px;
+    }
+
+    .chat-input-container input {
+        height: 44px;
+        font-size: 13px;
+    }
+
+    .chat-input-container button {
+        width: 42px;
+        height: 42px;
+    }
+
+    .welcome-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .product-card,
+    .comparison-product {
+        padding: 13px;
+    }
+
+    .product-image {
+        height: 100px;
+    }
+
+    .comparison-image {
+        height: 80px;
+    }
 }
 
 
