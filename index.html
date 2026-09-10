@@ -1,584 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meyvitt | Business · Technology · Growth </title>
-<meta name="description" content="Meyvitt helps growing businesses understand their numbers, improve operations, and use technology to grow smarter. Business strategy, financial analysis and technology delivery, in one team.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Meyvitt Favicon -->
-<link rel="icon" type="image/png" href="meyvitt.png">
-<link rel="apple-touch-icon" href="meyvitt.png">
+  <title>Meyvitt — AI That Works</title>
+  <meta name="description" content="Meyvitt builds AI agents and intelligent automation for businesses.">
+  <meta name="theme-color" content="#173d31">
 
-<!-- Open Graph / social preview. og:image points to a placeholder path — add a real 1200x630 image at /og-image.jpg before launch. -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Meyvitt">
-<meta property="og:title" content="Meyvitt — Business & Technology Consultancy">
-<meta property="og:description" content="We help growing businesses understand their numbers, improve their operations, and use technology to grow smarter.">
-<meta property="og:image" content="/og-image.jpg">
-<meta property="og:url" content="https://meyvitt.netlify.app/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Meyvitt — Business & Technology Consultancy">
-<meta name="twitter:description" content="We help growing businesses understand their numbers, improve their operations, and use technology to grow smarter.">
-<meta name="twitter:image" content="/og-image.jpg">
-<link rel="canonical" href="https://meyvitt.netlify.app/">
+  <link rel="icon" type="image/png" href="meyvitt.png">
+  <link rel="apple-touch-icon" href="meyvitt.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 
-<!-- Structured data: helps search engines and AI assistants understand who MEYVITT is -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Meyvitt",
-  "description": "Meyvitt helps growing businesses understand their numbers, improve their operations, and use technology to grow smarter.",
-  "url": "https://meyvitt.netlify.app/",
-  "email": "meyvittconsultancy@gmail.com",
-  "areaServed": ["IN", "US", "GB"],
-  "knowsAbout": ["Business strategy", "Market research", "Financial analysis", "Forecasting", "Business automation", "AI implementation", "Dashboards"],
-  "makesOffer": [
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Meyvitt Business", "description": "Strategy, market research and business analysis." } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Meyvitt Technology", "description": "AI, automation, websites, data and dashboards." } }
-  ]
-}
-</script>
-<style>
-  :root{
-    --ink:#14140f;
-    --ink-70:#4c4c44;
-    --ink-50:#7a7a70;
-    --paper:#faf9f6;
-    --paper-2:#f0efe9;
-    --paper-3:#e4e2d9;
-    --forest:#1e4a3a;
-    --forest-dim:#2c5c48;
-    --sage:#b9c9bd;
-    --line:rgba(20,20,15,0.13);
-    --line-strong:rgba(20,20,15,0.24);
-    --display:'Newsreader', serif;
-    --mono:'IBM Plex Mono', monospace;
-    --body:'Inter', sans-serif;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{background:var(--paper); color:var(--ink); font-family:var(--body); line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
-  a{color:inherit; text-decoration:none;}
-  img{max-width:100%; display:block;}
-  .wrap{max-width:1180px; margin:0 auto; padding:0 40px;}
-  ::selection{background:var(--forest); color:var(--paper);}
-
-  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
-    outline:2px solid var(--forest); outline-offset:3px; border-radius:2px;
-  }
-  .skip-link{
-    position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper);
-    padding:14px 22px; z-index:999; font-family:var(--mono); font-size:13px;
-  }
-  .skip-link:focus{left:16px; top:16px;}
-
-  .eyebrow{
-    font-family:var(--mono); font-size:11.5px; letter-spacing:0.13em; text-transform:uppercase;
-    color:var(--forest); display:flex; align-items:center; gap:10px; margin-bottom:20px;
-  }
-  .eyebrow::before{content:''; width:20px; height:1px; background:var(--forest);}
-  h1,h2,h3{font-family:var(--display); font-weight:500; letter-spacing:-0.005em; color:var(--ink);}
-  .num{font-family:var(--mono);}
-
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
-  }
-
-  /* NAV */
-  header{position:sticky; top:0; z-index:200; background:rgba(250,249,246,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
-  nav{display:flex; align-items:center; justify-content:space-between; padding:22px 40px; max-width:1180px; margin:0 auto;}
-  .logo{font-family:var(--display); font-weight:600; font-size:24px; letter-spacing:0.01em;}
-  .logo em{font-style:normal; color:var(--forest);}
-  .nav-links{display:flex; gap:38px; font-size:14px; font-weight:500;}
-  .nav-links a{opacity:0.7; transition:opacity .2s; position:relative;}
-  .nav-links a:hover{opacity:1;}
-  .nav-cta{font-family:var(--mono); font-size:12.5px; font-weight:500; border:1px solid var(--ink); padding:10px 20px; border-radius:2px; transition:background .2s, color .2s;}
-  .nav-cta:hover{background:var(--ink); color:var(--paper);}
-  .burger{display:none; flex-direction:column; gap:5px; cursor:pointer; border:none; background:none; padding:6px;}
-  .burger span{width:22px; height:1.5px; background:var(--ink); display:block;}
-  .mobile-menu{display:none;}
-
-  @media (max-width: 860px){
-    .nav-links, .nav-cta{display:none;}
-    .burger{display:flex;}
-    .mobile-menu{
-      display:none; position:fixed; inset:0; top:66px; background:var(--paper); z-index:190;
-      padding:36px 40px; flex-direction:column; gap:26px; font-size:20px; font-family:var(--display);
+  <style>
+    :root {
+      --bg: #f7f7f3;
+      --surface: #efefe9;
+      --ink: #171914;
+      --muted: #66685f;
+      --green: #173d31;
+      --line: rgba(23, 25, 20, .13);
+      --mono: "DM Mono", monospace;
+      --sans: "Manrope", sans-serif;
+      --serif: "Playfair Display", serif;
     }
-    .mobile-menu.open{display:flex;}
-    .mobile-menu a{border-bottom:1px solid var(--line); padding-bottom:18px;}
-    .mobile-menu .nav-cta{display:inline-flex; margin-top:6px;}
-  }
 
-  /* HERO */
-  .hero{padding:88px 0 0;}
-  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;}
-  .hero h1{font-size:clamp(36px, 4.6vw, 58px); line-height:1.08; max-width:600px;}
-  .hero p.sub{font-size:17.5px; color:var(--ink-70); max-width:480px; margin:26px 0 38px;}
-  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
-  .btn{font-family:var(--mono); font-size:13px; font-weight:500; padding:14px 26px; border-radius:2px; display:inline-flex; align-items:center; gap:8px; transition:transform .18s, background .18s, color .18s, border-color .18s;}
-  .btn-primary{background:var(--ink); color:var(--paper); border:1px solid var(--ink);}
-  .btn-primary:hover{background:var(--forest); border-color:var(--forest); transform:translateY(-2px);}
-  .btn-ghost{border:1px solid var(--line-strong); color:var(--ink);}
-  .btn-ghost:hover{border-color:var(--ink); transform:translateY(-2px);}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .hero-chart{background:var(--paper-2); border:1px solid var(--line); border-radius:4px; padding:26px 26px 20px;}
-  .hero-chart .chart-label{display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--ink-50); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:16px;}
-  .hero-chart .chart-label b{color:var(--forest); font-weight:500;}
-  .hero-chart svg{width:100%; height:auto; display:block;}
-  .chart-foot{display:flex; justify-content:space-between; margin-top:12px; font-family:var(--mono); font-size:10.5px; color:var(--ink-50);}
+    a { color: inherit; text-decoration: none; }
 
-  /* TRUST STRIP */
-  .trust{border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:80px;}
-  .trust-grid{display:grid; grid-template-columns:repeat(4,1fr);}
-  .trust-item{padding:28px 32px; border-right:1px solid var(--line); display:flex; gap:14px; align-items:flex-start;}
-  .trust-item:last-child{border-right:none;}
-  .trust-item .t-num{font-family:var(--mono); font-size:12px; color:var(--forest); flex-shrink:0; padding-top:2px;}
-  .trust-item p{font-size:13.5px; color:var(--ink-70); line-height:1.45;}
+    .container {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+    }
 
-  section{padding:120px 0;}
-  .section-head{max-width:660px; margin-bottom:60px;}
-  .section-head h2{font-size:clamp(27px,3.6vw,38px); line-height:1.16;}
-  .section-head p{color:var(--ink-70); font-size:16px; margin-top:16px;}
+    /* HEADER */
+    header {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247,247,243,.94);
+      backdrop-filter: blur(12px);
+    }
 
-  /* METHOD */
-  .method{background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
-  .method-statement{font-family:var(--display); font-size:clamp(24px,3.4vw,36px); margin-bottom:64px; max-width:760px;}
-  .method-statement .arrow{color:var(--forest);}
-  .method-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .method-card{background:var(--paper-2); padding:34px 26px;}
-  .method-card .index{font-family:var(--mono); font-size:12px; color:var(--forest); margin-bottom:20px; display:block;}
-  .method-card h3{font-size:20px; margin-bottom:14px;}
-  .method-card ul{list-style:none; font-size:13.5px; color:var(--ink-70);}
-  .method-card li{padding:6px 0; border-top:1px solid var(--line);}
-  .method-card li:first-child{border-top:none;}
+    nav {
+      width: min(1120px, calc(100% - 48px));
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  /* PILLARS */
-  .pillars-grid{display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line);}
-  .pillar{padding:46px 38px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);}
-  .pillar:last-child{border-right:none;}
-  .pillar .tag{font-family:var(--mono); font-size:11.5px; color:var(--forest); letter-spacing:0.07em; text-transform:uppercase; margin-bottom:16px; display:block;}
-  .pillar h3{font-size:24px; margin-bottom:10px;}
-  .pillar p.line{color:var(--ink-70); font-size:14.5px; margin-bottom:22px;}
-  .pillar ul{list-style:none; font-size:14px;}
-  .pillar li{padding:8px 0; border-top:1px solid var(--line); color:var(--ink-70);}
-  .pillar li:first-child{border-top:none;}
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -.04em;
+    }
 
-  /* ENGAGEMENT PROCESS */
-  .process-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:32px; position:relative;}
-  .process-grid::before{content:''; position:absolute; top:13px; left:5%; right:5%; height:1px; background:var(--line-strong); z-index:0;}
-  .process-step{position:relative; z-index:1;}
-  .process-step .dot{width:9px; height:9px; border-radius:50%; background:var(--forest); margin-bottom:22px;}
-  .process-step .p-num{font-family:var(--mono); font-size:11px; color:var(--ink-50); margin-bottom:10px; display:block;}
-  .process-step h3{font-size:18px; margin-bottom:10px;}
-  .process-step p{font-size:13.5px; color:var(--ink-70);}
-  .pricing-note{margin-top:56px; padding-top:28px; border-top:1px solid var(--line); font-family:var(--mono); font-size:12.5px; color:var(--ink-50); max-width:520px;}
+    .logo-dot { color: var(--green); }
 
-  /* HEALTH CHECK */
-  .health{background:var(--ink); color:var(--paper);}
-  .health .eyebrow{color:var(--sage);}
-  .health .eyebrow::before{background:var(--sage);}
-  .health h2{color:var(--paper);}
-  .health-inner{display:grid; grid-template-columns:1fr 1fr; gap:76px; align-items:start;}
-  .health-copy p{color:rgba(250,249,246,0.62); font-size:15.5px; margin:18px 0 30px; max-width:420px;}
-  .health-note{font-size:12.5px; color:rgba(250,249,246,0.42); font-family:var(--mono); margin-top:30px; max-width:420px; line-height:1.6;}
-  .health-panel{background:#1c1c17; border:1px solid rgba(250,249,246,0.13); padding:34px; border-radius:4px;}
-  .hc-row{margin-bottom:22px;}
-  .hc-row label{display:flex; justify-content:space-between; font-family:var(--mono); font-size:12px; letter-spacing:0.03em; text-transform:uppercase; color:rgba(250,249,246,0.55); margin-bottom:10px;}
-  .hc-row label span{color:var(--sage);}
-  input[type=range]{-webkit-appearance:none; width:100%; height:2px; background:rgba(250,249,246,0.22); outline:none; border-radius:2px;}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:var(--sage); cursor:pointer; border:2px solid #14140f;}
-  input[type=range]::-moz-range-thumb{width:13px; height:13px; border-radius:50%; background:var(--sage); border:2px solid #14140f; cursor:pointer;}
-  .hc-result{margin-top:28px; padding-top:24px; border-top:1px solid rgba(250,249,246,0.13); display:flex; align-items:center; gap:20px;}
-  .score-num{font-family:var(--mono); font-size:40px; color:var(--sage); line-height:1;}
-  .score-num small{font-size:15px; opacity:0.5;}
-  .hc-opportunity{font-size:13.5px; color:rgba(250,249,246,0.72); flex:1;}
-  .hc-opportunity b{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; color:var(--sage);}
-  .health-panel .btn-primary{margin-top:24px; width:100%; justify-content:center; background:var(--sage); color:#14140f; border-color:var(--sage);}
-  .health-panel .btn-primary:hover{background:var(--paper); border-color:var(--paper);}
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
 
-  /* LAB */
-  .lab-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .lab-card{padding:32px; background:var(--paper); transition:background .2s;}
-  .lab-card:hover{background:var(--paper-2);}
-  .lab-card .lab-id{font-family:var(--mono); font-size:11.5px; color:var(--forest); margin-bottom:16px; display:block;}
-  .lab-card h3{font-size:19px; margin-bottom:20px; line-height:1.3;}
-  .lab-field{margin-bottom:14px;}
-  .lab-field b{font-family:var(--mono); font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:var(--ink-50); display:block; margin-bottom:5px;}
-  .lab-field span{font-size:13.5px; color:var(--ink-70);}
+    .nav-link {
+      color: var(--muted);
+      font-size: 12px;
+      transition: color .2s ease;
+    }
 
-  /* INSIGHTS */
-  .insights-list{border-top:1px solid var(--line);}
-  .insight-row{display:flex; align-items:center; justify-content:space-between; gap:24px; padding:26px 0; border-bottom:1px solid var(--line); transition:padding-left .2s;}
-  .insight-row:hover{padding-left:8px;}
-  .insight-row .cat{font-family:var(--mono); font-size:11px; letter-spacing:0.07em; text-transform:uppercase; color:var(--forest); width:110px; flex-shrink:0;}
-  .insight-row h3{font-size:18px; font-weight:500; flex:1;}
-  .insight-row .arrow{font-family:var(--mono); opacity:0.35; font-size:17px;}
+    .nav-link:hover { color: var(--ink); }
 
-  /* ABOUT */
-  .about-inner{display:grid; grid-template-columns:0.9fr 1.1fr; gap:80px;}
-  .about-statement{font-family:var(--display); font-size:clamp(23px,2.8vw,30px); line-height:1.35;}
-  .about-statement .accent{color:var(--forest);}
-  .about-text{color:var(--ink-70); font-size:14.5px; margin-top:22px; max-width:420px;}
-  .founders{display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line);}
-  .founder{background:var(--paper); padding:30px;}
-  .founder .role{font-family:var(--mono); font-size:11px; letter-spacing:0.07em; text-transform:uppercase; color:var(--forest); margin-bottom:8px; display:block;}
-  .founder h3{font-size:19px; margin-bottom:10px;}
-  .founder p{color:var(--ink-70); font-size:14px;}
+    .nav-cta {
+      font-family: var(--mono);
+      font-size: 10px;
+      border: 1px solid var(--ink);
+      padding: 10px 15px;
+      transition: .2s ease;
+    }
 
-  /* CONTACT / FOOTER */
-  .contact{background:var(--paper-2); border-top:1px solid var(--line);}
-  .contact h2{font-size:clamp(28px,4vw,42px); margin-bottom:18px;}
-  .contact p{color:var(--ink-70); font-size:15.5px;}
-  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start;}
-  .contact-facts{list-style:none; margin-top:36px; border-top:1px solid var(--line);}
-  .contact-facts li{padding:16px 0; border-bottom:1px solid var(--line);}
-  .contact-facts b{display:block; font-family:var(--mono); font-size:11px; letter-spacing:0.07em; text-transform:uppercase; color:var(--forest); margin-bottom:6px;}
-  .contact-facts span{font-size:13.5px; color:var(--ink-70);}
-  .contact-facts a{text-decoration:underline; text-underline-offset:2px;}
-  .contact-alt{margin-top:24px; font-size:14px;}
-  .contact-alt a{text-decoration:underline; text-underline-offset:2px;}
+    .nav-cta:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
 
-  .contact-form{background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:34px;}
-  .form-row{margin-bottom:18px;}
-  .form-row label{display:block; font-family:var(--mono); font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-70); margin-bottom:8px;}
-  .form-row .optional{text-transform:none; letter-spacing:0; color:var(--ink-50);}
-  .form-row input, .form-row textarea{
-    width:100%; font-family:var(--body); font-size:15px; color:var(--ink);
-    background:var(--paper); border:1px solid var(--line-strong); border-radius:2px;
-    padding:12px 14px; resize:vertical;
-  }
-  .form-row input:focus, .form-row textarea:focus{border-color:var(--forest);}
-  .contact-form .btn-primary{width:100%; justify-content:center; border-radius:2px; cursor:pointer;}
-  .form-status{margin-top:14px; font-size:13.5px; min-height:18px;}
-  .form-status.success{color:var(--forest);}
-  .form-status.error{color:#a13a2b;}
-  .form-fineprint{margin-top:16px; font-size:12px; color:var(--ink-50); text-align:center;}
-  footer{padding:44px 0; border-top:1px solid var(--line);}
-  .foot-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
-  .foot-links{display:flex; gap:26px; font-size:13px; font-family:var(--mono);}
-  .foot-links a{opacity:0.6; transition:opacity .2s;}
-  .foot-links a:hover{opacity:1;}
-  .foot-small{font-family:var(--mono); font-size:11.5px; color:var(--ink-50);}
+    /* HERO */
+    .hero {
+      min-height: calc(100vh - 78px);
+      display: flex;
+      align-items: center;
+      padding: 90px 0;
+    }
 
-  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
-  .reveal.in{opacity:1; transform:translateY(0);}
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 80px;
+      align-items: center;
+    }
 
-  @media (max-width: 940px){
-    .hero-grid{grid-template-columns:1fr;}
-    .trust-grid{grid-template-columns:1fr 1fr;}
-    .trust-item{border-bottom:1px solid var(--line);}
-    .method-grid{grid-template-columns:1fr 1fr;}
-    .pillars-grid{grid-template-columns:1fr;}
-    .pillar{border-right:none;}
-    .process-grid{grid-template-columns:1fr 1fr; row-gap:40px;}
-    .process-grid::before{display:none;}
-    .health-inner{grid-template-columns:1fr; gap:40px;}
-    .lab-grid{grid-template-columns:1fr;}
-    .about-inner{grid-template-columns:1fr; gap:40px;}
-    .contact-grid{grid-template-columns:1fr; gap:44px;}
-    section{padding:80px 0;}
-    .insight-row{flex-wrap:wrap;}
-  }
-  @media (max-width: 560px){
-    .method-grid, .process-grid, .trust-grid{grid-template-columns:1fr;}
-    .wrap{padding:0 22px;}
-    nav{padding:18px 22px;}
-    .hero{padding-top:64px;}
-  }
-</style>
+    .eyebrow {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      max-width: 690px;
+      font-size: clamp(54px, 7vw, 92px);
+      line-height: .98;
+      letter-spacing: -.065em;
+      font-weight: 600;
+    }
+
+    h1 em {
+      color: var(--green);
+      font-family: var(--serif);
+      font-weight: 500;
+    }
+
+    .hero-copy {
+      max-width: 500px;
+      margin: 27px 0 34px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      padding: 14px 19px;
+      font-family: var(--mono);
+      font-size: 11px;
+      border: 1px solid var(--line);
+      transition: transform .2s ease, background .2s ease;
+      cursor: pointer;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .button.primary {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+
+    /* PRODUCT PREVIEW */
+    .product {
+      background: #171914;
+      color: #f5f5ef;
+      min-height: 390px;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.10);
+      transition: transform .25s ease;
+    }
+
+    .product:hover { transform: translateY(-4px); }
+
+    .product-bar {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 19px;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .08em;
+    }
+
+    .status { color: #a8c5b4; }
+    .status:before { content: "●"; margin-right: 6px; }
+
+    .product-content {
+      padding: 42px 32px 32px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-content small {
+      color: #9fa198;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .product-content h2 {
+      font-size: 34px;
+      letter-spacing: -.04em;
+      margin: 10px 0 16px;
+      font-weight: 500;
+    }
+
+    .product-content p {
+      color: #a8aaa2;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 360px;
+    }
+
+    .product-input {
+      margin-top: auto;
+      border: 1px solid rgba(255,255,255,.13);
+      padding: 13px;
+      color: #74766f;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .product-input span { color: #b9d2c1; }
+
+    /* STATEMENT */
+    .statement {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 36px 0;
+    }
+
+    .statement-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .statement p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 420px;
+    }
+
+    .statement strong {
+      font-size: clamp(24px, 3vw, 36px);
+      letter-spacing: -.04em;
+      font-weight: 500;
+    }
+
+    /* OFFERINGS */
+    .section { padding: 120px 0; }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 46px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(36px, 4vw, 54px);
+      letter-spacing: -.055em;
+      font-weight: 600;
+    }
+
+    .section-heading p {
+      max-width: 350px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .offerings {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .offering {
+      padding: 35px 30px;
+      min-height: 240px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background .2s ease;
+    }
+
+    .offering:hover { background: var(--surface); }
+
+    .number {
+      font-family: var(--mono);
+      color: var(--green);
+      font-size: 10px;
+    }
+
+    .offering h3 {
+      font-size: 24px;
+      letter-spacing: -.04em;
+      margin: 45px 0 9px;
+      font-weight: 600;
+    }
+
+    .offering p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    /* CONTACT */
+    .contact {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 110px 0;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 90px;
+      align-items: start;
+    }
+
+    .contact-copy h2 {
+      font-size: clamp(38px, 4vw, 54px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+      margin-bottom: 18px;
+    }
+
+    .contact-copy > p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+      max-width: 380px;
+    }
+
+    .contact-email {
+      display: inline-block;
+      margin-top: 28px;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-bottom: 1px solid var(--green);
+      padding-bottom: 5px;
+      color: var(--green);
+    }
+
+    .contact-form {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 32px;
+    }
+
+    .form-row { margin-bottom: 17px; }
+
+    .form-row label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: transparent;
+      padding: 13px;
+      color: var(--ink);
+      font: 13px var(--sans);
+      transition: border-color .2s ease;
+    }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--green);
+    }
+
+    .contact-form button { width: 100%; }
+
+    .form-status {
+      min-height: 18px;
+      margin-top: 13px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .success { color: var(--green); }
+    .error { color: #a13a2b; }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: #f4f4ee;
+      padding: 48px 0 25px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 50px;
+      padding-bottom: 42px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+
+    .footer-logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.04em;
+    }
+
+    .footer-brand p {
+      margin-top: 12px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-title {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      width: fit-content;
+    }
+
+    .footer-links a:hover { color: white; }
+
+    .footer-email {
+      font-size: 12px;
+      color: #b8d0bf !important;
+      word-break: break-word;
+    }
+
+    .footer-bottom {
+      padding-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: rgba(255,255,255,.42);
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    /* ANIMATION */
+    .fade {
+      opacity: 0;
+      transform: translateY(15px);
+      animation: appear .7s ease forwards;
+    }
+
+    .delay-1 { animation-delay: .1s; }
+    .delay-2 { animation-delay: .2s; }
+
+    @keyframes appear {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 850px) {
+      .hero-grid,
+      .statement-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .hero { padding: 70px 0; }
+      .offerings { grid-template-columns: 1fr; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 16px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+      .section { padding: 85px 0; }
+    }
+
+    @media (max-width: 620px) {
+      .container, nav { width: min(100% - 32px, 1120px); }
+      .nav-link { display: none; }
+      .nav-cta { padding: 9px 11px; font-size: 9px; }
+      h1 { font-size: 54px; }
+      .contact { padding: 80px 0; }
+      .contact-form { padding: 22px; }
+      .footer-top { grid-template-columns: 1fr; gap: 35px; }
+      .footer-brand { grid-column: auto; }
+      .footer-bottom { flex-direction: column; }
+    }
+  </style>
 </head>
-<body>
 
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<body>
 
 <header>
   <nav>
-    <a href="#top" class="logo">Meyvitt<em>.</em></a>
-    <div class="nav-links">
-      <a href="#solutions">Solutions</a>
-      <a href="#process">Process</a>
-      <a href="#lab">Lab</a>
-      <a href="#insights">Insights</a>
-      <a href="#about">About</a>
+    <a href="./" class="logo">Meyvitt<span class="logo-dot">.</span></a>
+
+    <div class="nav-right">
+      <a href="AIAgent/" class="nav-link">AI Agent</a>
+      <a href="#what-we-build" class="nav-link">Solutions</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#contact" class="nav-cta">Let's talk →</a>
     </div>
-    <a href="#contact" class="nav-cta">Start a Conversation →</a>
-    <a href="/AIAgent" class="nav-cta" style="border-color:var(--forest); color:var(--forest); margin-left:10px;" target="_blank" rel="noopener">Try AI Agent →</a>
-    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#solutions">Solutions</a>
-    <a href="#process">Process</a>
-    <a href="#lab">Lab</a>
-    <a href="#insights">Insights</a>
-    <a href="#about">About</a>
-    <a href="#contact" class="btn btn-primary">Start a Conversation →</a>
-    <a href="/AIAgent" class="btn btn-ghost" target="_blank" rel="noopener">Try AI Agent →</a>
-  </div>
 </header>
 
-<main id="top">
-  <div id="main-content"></div>
+<main>
 
-  <!-- HERO -->
   <section class="hero">
-    <div class="wrap">
+    <div class="container">
       <div class="hero-grid">
-        <div class="reveal">
-          <div class="eyebrow">Business · Technology · Growth</div>
-          <h1>Your Business Has Potential. Let's Build It.</h1>
-          <p class="sub">Meyvitt combines business intelligence, financial thinking and technology to help growing businesses make smarter decisions and move faster.</p>
-          <div class="hero-ctas">
-            <a href="#contact" class="btn btn-primary">Work With Us</a>
-            <a href="#solutions" class="btn btn-ghost">Explore What We Do</a>
-            <a href="/AIAgent" class="btn btn-ghost" target="_blank" rel="noopener">Try AI Agent →</a>
+
+        <div>
+          <div class="eyebrow fade">AI Agents · Intelligent Systems</div>
+
+          <h1 class="fade delay-1">
+            Put <em>AI</em><br>to work.
+          </h1>
+
+          <p class="hero-copy fade delay-2">
+            Meyvitt builds AI agents and intelligent automation for businesses that want to do more with less manual work.
+          </p>
+
+          <div class="buttons fade delay-2">
+            <a href="AIAgent/" class="button primary">Try AI Agent →</a>
+            <a href="#contact" class="button">Build with Meyvitt →</a>
           </div>
         </div>
-        <div class="hero-chart reveal">
-          <div class="chart-label"><span>Operating Margin — Illustrative Client</span><b>+18.4%</b></div>
-          <svg viewBox="0 0 460 220" preserveAspectRatio="none" role="img" aria-label="Illustrative chart showing operating margin improving after a Meyvitt engagement, from a lower starting line to a higher ending point">
-            <line x1="0" y1="20" x2="460" y2="20" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
-            <line x1="0" y1="75" x2="460" y2="75" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
-            <line x1="0" y1="130" x2="460" y2="130" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
-            <line x1="0" y1="185" x2="460" y2="185" stroke="rgba(20,20,15,0.10)" stroke-width="1"/>
-            <path d="M0,178 L65,168 L130,182 L195,140 L260,148 L325,96 L390,84 L460,34" fill="none" stroke="rgba(20,20,15,0.28)" stroke-width="1.5" stroke-dasharray="3 4"/>
-            <path id="growthLine" d="M0,190 L65,175 L130,178 L195,150 L260,155 L325,110 L390,90 L460,42" fill="none" stroke="#1e4a3a" stroke-width="2.5"/>
-            <circle cx="460" cy="42" r="4.5" fill="#1e4a3a"/>
-          </svg>
-          <div class="chart-foot"><span>Before engagement</span><span>After 4D framework</span></div>
-        </div>
-      </div>
-    </div>
 
-    <div class="trust">
-      <div class="wrap" style="padding:0;">
-        <div class="trust-grid">
-          <div class="trust-item"><span class="t-num num">01</span><p>Direct access to the people doing the work — no account managers, no hand-offs.</p></div>
-          <div class="trust-item"><span class="t-num num">02</span><p>Confidentiality by default. Happy to sign an NDA before any material is shared.</p></div>
-          <div class="trust-item"><span class="t-num num">03</span><p>Fixed-scope engagements with a defined deliverable, timeline and price.</p></div>
-          <div class="trust-item"><span class="t-num num">04</span><p>We work across time zones and reply within one business day.</p></div>
-        </div>
+        <a href="AIAgent/" class="product fade delay-1" aria-label="Try Meyvitt AI Agent">
+          <div class="product-bar">
+            <span>MEYVITT AI</span>
+            <span class="status">ONLINE</span>
+          </div>
+
+          <div class="product-content">
+            <small>YOUR AI AGENT</small>
+            <h2>Hello. How can I help?</h2>
+            <p>Ask questions. Explore the demo. See what an AI agent can do.</p>
+
+            <div class="product-input">
+              <span>›</span> Ask something...
+            </div>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
 
-  <!-- METHOD -->
-  <section class="method">
-    <div class="wrap">
-      <div class="eyebrow reveal">The Meyvitt Method</div>
-      <h2 class="method-statement reveal">Understand <span class="arrow">→</span> Strategize <span class="arrow">→</span> Build <span class="arrow">→</span> Grow</h2>
-      <div class="method-grid reveal">
-        <div class="method-card">
-          <span class="index num">01 — Discover</span>
-          <h3>Understand the business</h3>
-          <ul><li>Revenue</li><li>Customers</li><li>Costs</li><li>Competition</li><li>Operations</li></ul>
-        </div>
-        <div class="method-card">
-          <span class="index num">02 — Diagnose</span>
-          <h3>Find what's actually wrong</h3>
-          <ul><li>Where you're losing money</li><li>Where you're losing time</li><li>What isn't working</li></ul>
-        </div>
-        <div class="method-card">
-          <span class="index num">03 — Develop</span>
-          <h3>Build the solution</h3>
-          <ul><li>Strategy & financial model</li><li>Dashboard</li><li>Website</li><li>Automation & AI workflow</li></ul>
-        </div>
-        <div class="method-card">
-          <span class="index num">04 — Deliver</span>
-          <h3>Measure the result</h3>
-          <ul><li>Efficiency</li><li>Revenue</li><li>Cost savings</li><li>Customer experience</li></ul>
-        </div>
+  <section class="statement">
+    <div class="container">
+      <div class="statement-grid">
+        <strong>Not another chatbot.</strong>
+        <p>We build AI that has a purpose — designed around the work your business actually needs done.</p>
       </div>
     </div>
   </section>
 
-  <!-- SOLUTIONS -->
-  <section id="solutions">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">What We Do</div>
-        <h2>Business tells you what to do. Finance tells you whether it's worth doing. Technology helps you do it efficiently.</h2>
+  <section class="section" id="what-we-build">
+    <div class="container">
+
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">What we build</div>
+          <h2>Intelligence,<br>put to use.</h2>
+        </div>
+
+        <p>Start with an AI agent. Build toward a more intelligent business.</p>
       </div>
-    </div>
-    <div class="wrap" style="padding:0;">
-      <div class="pillars-grid reveal">
-        <div class="pillar">
-          <span class="tag">Meyvitt Business</span>
-          <h3>Make better decisions.</h3>
-          <p class="line">Understand the market before you commit resources to it.</p>
-          <ul><li>Market research</li><li>Competitor analysis</li><li>Business strategy</li><li>Business planning</li><li>Process analysis</li></ul>
+
+      <div class="offerings">
+
+        <div class="offering">
+          <div class="number">01</div>
+          <h3>AI Agents</h3>
+          <p>Digital workers built to answer, assist and perform specific tasks.</p>
         </div>
-        <div class="pillar">
-          <span class="tag">Meyvitt Finance</span>
-          <h3>Know your numbers.</h3>
-          <p class="line">Growth without margin discipline is difficult to sustain.</p>
-          <ul><li>Financial analysis</li><li>Budgeting</li><li>Forecasting</li><li>Profitability analysis</li><li>Financial dashboards</li></ul>
+
+        <div class="offering">
+          <div class="number">02</div>
+          <h3>AI Automation</h3>
+          <p>Workflows that reduce repetitive work and keep things moving.</p>
         </div>
-        <div class="pillar">
-          <span class="tag">Meyvitt Technology</span>
-          <h3>Work smarter.</h3>
-          <p class="line">Manual processes are decisions waiting to be automated.</p>
-          <ul><li>Website development</li><li>Business automation</li><li>AI implementation</li><li>Data dashboards</li><li>Digital solutions</li></ul>
+
+        <div class="offering">
+          <div class="number">03</div>
+          <h3>Custom Systems</h3>
+          <p>Intelligent tools built around the way your business works.</p>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
-  <section id="process" style="border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">How An Engagement Works</div>
-        <h2>A clear process, agreed upfront.</h2>
-        <p>No open-ended retainers by default. You know what you're getting, by when, and what it costs before we start.</p>
-      </div>
-      <div class="process-grid reveal">
-        <div class="process-step"><div class="dot"></div><span class="p-num">Step 01</span><h3>Discovery call</h3><p>30 minutes, no cost. We listen, ask questions, and tell you honestly if we're a fit.</p></div>
-        <div class="process-step"><div class="dot"></div><span class="p-num">Step 02</span><h3>Proposal & scope</h3><p>A written scope, timeline and fixed price. Nothing starts until you approve it.</p></div>
-        <div class="process-step"><div class="dot"></div><span class="p-num">Step 03</span><h3>Delivery sprint</h3><p>Focused work against the agreed scope, with regular check-ins — not silence until the deadline.</p></div>
-        <div class="process-step"><div class="dot"></div><span class="p-num">Step 04</span><h3>Handover & support</h3><p>Documentation, training if needed, and a defined support window after delivery.</p></div>
-      </div>
-      <p class="pricing-note">Pricing is quoted per engagement in your preferred currency — INR, USD or GBP — and confirmed before any work begins.</p>
-    </div>
-  </section>
-
-  <!-- HEALTH CHECK -->
-  <section class="health">
-    <div class="wrap health-inner">
-      <div class="health-copy reveal">
-        <div class="eyebrow">Business Health Check</div>
-        <h2>Is your business ready to scale?</h2>
-        <p>A quick, honest self-assessment across the four areas that most often decide whether growth is profitable or just busy.</p>
-        <div class="health-note">This is a self-assessment tool, not a formal audit. It gives directional guidance only — a full diagnostic happens in the Discover step of an engagement.</div>
-      </div>
-      <div class="health-panel reveal">
-        <div class="hc-row"><label>Finance <span id="v-finance">50</span></label><input type="range" min="0" max="100" value="50" id="s-finance"></div>
-        <div class="hc-row"><label>Operations <span id="v-operations">50</span></label><input type="range" min="0" max="100" value="50" id="s-operations"></div>
-        <div class="hc-row"><label>Technology <span id="v-technology">50</span></label><input type="range" min="0" max="100" value="50" id="s-technology"></div>
-        <div class="hc-row"><label>Growth <span id="v-growth">50</span></label><input type="range" min="0" max="100" value="50" id="s-growth"></div>
-        <div class="hc-result">
-          <div class="score-num" id="score-total">50<small>/100</small></div>
-          <div class="hc-opportunity"><b>Biggest opportunity</b><span id="opportunity-text">Balanced across the board — keep an eye on all four.</span></div>
-        </div>
-        <a href="#contact" class="btn btn-primary">Book a 20-Minute Discussion</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- LAB -->
-  <section id="lab">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">Meyvitt Lab</div>
-        <h2>Real problems, worked through end to end.</h2>
-        <p>Before we had clients, we picked real business problems and solved them properly. These are those projects — not fabricated case studies.</p>
-      </div>
-      <div class="lab-grid reveal">
-        <div class="lab-card">
-          <span class="lab-id num">Lab 001 — Local Café</span>
-          <h3>Which products actually make money?</h3>
-          <div class="lab-field"><b>Problem</b><span>Owner had no visibility into per-item margins.</span></div>
-          <div class="lab-field"><b>Analysis</b><span>Revenue, costs, margins, customer behaviour.</span></div>
-          <div class="lab-field"><b>Solution</b><span>Financial dashboard and product profitability model.</span></div>
-        </div>
-        <div class="lab-card">
-          <span class="lab-id num">Lab 002 — E-commerce Startup</span>
-          <h3>Too much manual work, too little time.</h3>
-          <div class="lab-field"><b>Problem</b><span>Order and inventory tracking done by hand daily.</span></div>
-          <div class="lab-field"><b>Analysis</b><span>Mapped every repeated manual process.</span></div>
-          <div class="lab-field"><b>Solution</b><span>Automation workflow and live operations dashboard.</span></div>
-        </div>
-        <div class="lab-card">
-          <span class="lab-id num">Lab 003 — Travel Business</span>
-          <h3>Bookings living in spreadsheets and chat threads.</h3>
-          <div class="lab-field"><b>Problem</b><span>Manual booking and customer management.</span></div>
-          <div class="lab-field"><b>Analysis</b><span>Traced the booking journey end to end.</span></div>
-          <div class="lab-field"><b>Solution</b><span>Digital workflow and centralised dashboard.</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- INSIGHTS -->
-  <section id="insights">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">Meyvitt Insights</div>
-        <h2>Judgment, in writing.</h2>
-      </div>
-      <div class="insights-list reveal">
-        <a href="#" class="insight-row"><span class="cat">Business</span><h3>Why most small businesses don't actually know their profit</h3><span class="arrow">→</span></a>
-        <a href="#" class="insight-row"><span class="cat">Finance</span><h3>Revenue is growing. So why is cash disappearing?</h3><span class="arrow">→</span></a>
-        <a href="#" class="insight-row"><span class="cat">Technology</span><h3>Five processes to automate before hiring another employee</h3><span class="arrow">→</span></a>
-        <a href="#" class="insight-row"><span class="cat">AI</span><h3>Where AI actually saves a small business money</h3><span class="arrow">→</span></a>
-        <a href="#" class="insight-row"><span class="cat">Startups</span><h3>Looking busy versus actually growing — the difference</h3><span class="arrow">→</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="wrap about-inner">
-      <div class="reveal">
-        <p class="about-statement">Two disciplines. <span class="accent">One team.</span></p>
-        <p class="about-text">Meyvitt was founded on a simple premise: growing businesses shouldn't have to choose between sound business thinking and capable technology delivery. We work as one team across both, and we're building the firm in the open — the same rigor we bring to client work, we apply to our own.</p>
-      </div>
-      <div class="founders reveal">
-        <div class="founder"><span class="role">Business & Finance</span><h3>Strategy and numbers</h3><p>Reads a business through revenue, margin and cash before recommending a single tool or tactic.</p></div>
-        <div class="founder"><span class="role">Technology</span><h3>Systems and delivery</h3><p>Turns a diagnosis into something built — a dashboard, a workflow, a website that actually works.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
+  <!-- CONTACT: keeps your enquiry flow on the homepage -->
   <section class="contact" id="contact">
-    <div class="wrap">
+    <div class="container">
       <div class="contact-grid">
-        <div class="contact-copy reveal">
-          <div class="eyebrow">Get Started</div>
-          <h2>Start a conversation.</h2>
-          <p>Tell us where the business is stuck. We'll tell you honestly whether we can help, and what it would take.</p>
 
-          <ul class="contact-facts">
-            <li><b>Confidentiality</b><span>Every conversation is confidential. NDAs signed on request before any material is shared.</span></li>
-            <li><b>Hours</b><span>Based in India (IST), with working overlap for US and UK business hours.</span></li>
-            <li><b>Response time</b><span>We reply within one business day, every time.</span></li>
-            <li><b>Privacy</b><span>Form details are used only to respond to your enquiry. See our <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms</a>.</span></li>
-          </ul>
+        <div class="contact-copy">
+          <div class="eyebrow">Let's talk</div>
+          <h2>Let's build something useful.</h2>
+          <p>
+            Have a workflow, problem or idea where AI could help? Tell us about it.
+          </p>
 
-          <p class="contact-alt">Prefer email? Write to <a href="mailto:meyvittconsultancy@gmail.com">meyvittconsultancy@gmail.com</a> directly.</p>
+          <a class="contact-email" href="mailto:meyvittconsultancy@gmail.com">
+            meyvittconsultancy@gmail.com
+          </a>
         </div>
 
-        <form class="contact-form reveal" id="contactForm" novalidate>
+        <form class="contact-form" id="contactForm" novalidate>
           <div class="form-row">
             <label for="cf-name">Name</label>
-            <input type="text" id="cf-name" name="name" autocomplete="name" required>
+            <input type="text" id="cf-name" name="name" required>
           </div>
+
           <div class="form-row">
             <label for="cf-email">Email</label>
-            <input type="email" id="cf-email" name="email" autocomplete="email" required>
+            <input type="email" id="cf-email" name="email" required>
           </div>
+
           <div class="form-row">
-            <label for="cf-company">Company <span class="optional">(optional)</span></label>
-            <input type="text" id="cf-company" name="company" autocomplete="organization">
+            <label for="cf-company">Company / Business</label>
+            <input type="text" id="cf-company" name="company">
           </div>
+
           <div class="form-row">
-            <label for="cf-message">What's the business challenge?</label>
-            <textarea id="cf-message" name="message" rows="4" required></textarea>
+            <label for="cf-message">What would you like AI to help with?</label>
+            <textarea id="cf-message" name="message" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" id="cf-submit">Send Message</button>
-          <p class="form-status" id="cf-status" role="status" aria-live="polite"></p>
-          <p class="form-fineprint">
-            <!-- FORM BACKEND: this posts to a placeholder endpoint. Replace FORM_ENDPOINT below
-                 with a real form service (e.g. Formspree, Basin) or your own API route before launch. -->
-            We don't sell or share your details. Ever.
-          </p>
+
+          <button class="button primary" type="submit" id="cf-submit">
+            Send message →
+          </button>
+
+          <p class="form-status" id="cf-status"></p>
         </form>
+
       </div>
     </div>
   </section>
@@ -586,68 +677,51 @@
 </main>
 
 <footer>
-  <div class="wrap foot-inner">
-    <a href="#top" class="logo" style="font-size:16px;">Meyvitt<em>.</em></a>
-    <div class="foot-links">
-      <a href="#solutions">Solutions</a>
-      <a href="#process">Process</a>
-      <a href="#lab">Lab</a>
-      <a href="#insights">Insights</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
+  <div class="container">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <a href="./" class="footer-logo">Meyvitt<span class="logo-dot">.</span></a>
+        <p>AI agents and intelligent systems for businesses.</p>
+      </div>
+
+      <div>
+        <div class="footer-title">Explore</div>
+        <div class="footer-links">
+          <a href="./">Home</a>
+          <a href="AIAgent/">Try AI Agent</a>
+          <a href="#what-we-build">Solutions</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">Contact</div>
+        <div class="footer-links">
+          <a class="footer-email" href="mailto:meyvittconsultancy@gmail.com">
+            meyvittconsultancy@gmail.com
+          </a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms & Conditions</a>
+        </div>
+      </div>
+
     </div>
-    <span class="foot-small">© 2026 Meyvitt</span>
+
+    <div class="footer-bottom">
+      <span>© 2026 Meyvitt. All rights reserved.</span>
+      <span>AI · Automation · Intelligent Systems</span>
+    </div>
+
   </div>
 </footer>
 
 <script>
-  // Mobile menu
-  const burger = document.getElementById('burgerBtn');
-  const menu = document.getElementById('mobileMenu');
-  burger.addEventListener('click', () => menu.classList.toggle('open'));
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
-
-  // Scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // Health check sliders
-  const ids = ['finance','operations','technology','growth'];
-  const sliders = {};
-  ids.forEach(id => sliders[id] = document.getElementById('s-' + id));
-  const opportunityCopy = {
-    finance: "Financial visibility — revenue may be growing without a clear read on real margin.",
-    operations: "Operational efficiency — manual processes are likely absorbing time that should go to growth.",
-    technology: "Technology — a lightweight dashboard or automation could remove recurring manual work.",
-    growth: "Growth strategy — fundamentals look solid; demand generation needs a clearer plan."
-  };
-  function updateHealth(){
-    let total = 0, lowestKey = ids[0], lowestVal = 101;
-    ids.forEach(id => {
-      const val = parseInt(sliders[id].value, 10);
-      document.getElementById('v-' + id).textContent = val;
-      total += val;
-      if (val < lowestVal){ lowestVal = val; lowestKey = id; }
-    });
-    const avg = Math.round(total / ids.length);
-    document.getElementById('score-total').innerHTML = avg + '<small>/100</small>';
-    const vals = ids.map(id => parseInt(sliders[id].value,10));
-    const spread = Math.max(...vals) - Math.min(...vals);
-    document.getElementById('opportunity-text').textContent = spread < 8
-      ? "Balanced across the board — the next step is compounding what's already working."
-      : opportunityCopy[lowestKey];
-  }
-  ids.forEach(id => sliders[id].addEventListener('input', updateHealth));
-  updateHealth();
-
-  // ============================================
-  // Meyvitt CONTACT FORM
-  // ============================================
-
+  /*
+    Contact form endpoint from your previous Meyvitt homepage.
+    Replace only if you change your Google Apps Script deployment.
+  */
   const FORM_ENDPOINT =
     'https://script.google.com/macros/s/AKfycbzpK_wGcDHC32QIy1_SsDyU_mSO8LpOzgt--QQo8YjrDNxfm0D1OXPzH68k2nYRVZ9ybw/exec';
 
@@ -658,43 +732,30 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    statusEl.className = 'form-status';
-    statusEl.textContent = '';
-
     const name = document.getElementById('cf-name').value.trim();
     const email = document.getElementById('cf-email').value.trim();
     const company = document.getElementById('cf-company').value.trim();
     const message = document.getElementById('cf-message').value.trim();
 
-    const emailOk =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    // Validation
     if (!name || !emailOk || !message) {
       statusEl.textContent =
-        'Please fill in your name, a valid email, and a short message.';
-
+        'Please enter your name, a valid email and a message.';
       statusEl.className = 'form-status error';
       return;
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+    submitBtn.textContent = 'Sending...';
+    statusEl.textContent = '';
 
     try {
-
       const formData = new URLSearchParams();
-
       formData.append('name', name);
       formData.append('email', email);
       formData.append('company', company);
       formData.append('message', message);
-
-      /*
-       * We intentionally use URLSearchParams rather than
-       * application/json so the request remains a simple
-       * browser request and does not require a CORS preflight.
-       */
 
       await fetch(FORM_ENDPOINT, {
         method: 'POST',
@@ -702,28 +763,19 @@
         mode: 'no-cors'
       });
 
-      // Submission sent
       statusEl.textContent =
-        "Thanks — we've received your message. We'll reply within one business day.";
-
+        "Thanks — we've received your message. We'll get back to you soon.";
       statusEl.className = 'form-status success';
-
       form.reset();
 
     } catch (error) {
-
-      console.error('Contact form error:', error);
-
       statusEl.textContent =
-        'Something went wrong sending that. Please email meyvittconsultancy@gmail.com directly.';
-
+        'Something went wrong. Please email meyvittconsultancy@gmail.com.';
       statusEl.className = 'form-status error';
 
     } finally {
-
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Message';
-
+      submitBtn.textContent = 'Send message →';
     }
   });
 </script>
