@@ -19,23 +19,39 @@
     :root {
       --bg: #f8f8f5;
       --surface: #f1f1ec;
-      --surface-2: #e9e9e2;
       --ink: #151713;
       --muted: #686b63;
+
       --green: #173d31;
-      --green-soft: #dfe9e2;
-      --line: rgba(21, 23, 19, .12);
-      --line-light: rgba(255,255,255,.12);
-      --white: #fff;
+      --green-hover: #0f3026;
+
+      --line: rgba(21, 23, 19, 0.12);
+      --line-light: rgba(255, 255, 255, 0.12);
+
+      --white: #ffffff;
+      --dark: #171a16;
+
       --mono: "DM Mono", monospace;
       --sans: "Manrope", sans-serif;
       --serif: "Playfair Display", Georgia, serif;
+
+      --container: 1140px;
       --radius: 4px;
-      --shadow: 0 22px 70px rgba(22, 26, 20, .09);
+
+      --shadow:
+        0 22px 70px rgba(22, 26, 20, 0.09);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background: var(--bg);
       color: var(--ink);
@@ -44,47 +60,58 @@
       text-rendering: optimizeLegibility;
     }
 
-    a { color: inherit; text-decoration: none; }
-    button, input, textarea { font: inherit; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
 
     .container {
-      width: min(1140px, calc(100% - 48px));
+      width: min(var(--container), calc(100% - 48px));
       margin: 0 auto;
     }
 
-    /* ───────────────── HEADER ───────────────── */
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
     .site-header {
       position: sticky;
       top: 0;
       z-index: 100;
+
       height: 76px;
+
       display: flex;
       align-items: center;
+
+      background: rgba(248, 248, 245, 0.96);
       border-bottom: 1px solid var(--line);
-      background: rgba(248, 248, 245, .88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
     .nav {
-      width: min(1140px, calc(100% - 48px));
+      width: min(var(--container), calc(100% - 48px));
       margin: 0 auto;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     .brand {
-      display: inline-flex;
-      align-items: center;
       font-size: 20px;
       font-weight: 800;
-      letter-spacing: -.055em;
+      letter-spacing: -0.055em;
     }
 
     .brand-mark {
       color: var(--green);
-      margin-left: 1px;
     }
 
     .nav-links {
@@ -97,18 +124,25 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 500;
-      transition: color .2s ease;
+
+      transition: color 0.2s ease;
     }
 
-    .nav-link:hover { color: var(--ink); }
+    .nav-link:hover {
+      color: var(--ink);
+    }
 
     .nav-button {
-      padding: 10px 15px;
+      padding: 10px 16px;
+
       border: 1px solid var(--ink);
+
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: .01em;
-      transition: background .2s ease, color .2s ease;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
     .nav-button:hover {
@@ -116,33 +150,29 @@
       color: var(--bg);
     }
 
-    /* ───────────────── HERO ───────────────── */
+
+    /* =========================================
+       HERO
+    ========================================= */
+
     .hero {
-      position: relative;
-      overflow: hidden;
       min-height: calc(100vh - 76px);
+
       display: flex;
       align-items: center;
-      padding: 88px 0;
-    }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      width: 560px;
-      height: 560px;
-      right: -260px;
-      top: -210px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(23,61,49,.055), transparent 68%);
-      pointer-events: none;
+      padding: 90px 0;
     }
 
     .hero-grid {
-      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(380px, .9fr);
+
+      grid-template-columns:
+        minmax(0, 1.05fr)
+        minmax(380px, 0.9fr);
+
       gap: clamp(48px, 7vw, 100px);
+
       align-items: center;
     }
 
@@ -150,41 +180,54 @@
       display: flex;
       align-items: center;
       gap: 9px;
+
+      margin-bottom: 22px;
+
       color: var(--green);
+
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: .11em;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
-      margin-bottom: 22px;
     }
 
     .eyebrow::before {
       content: "";
+
       width: 18px;
       height: 1px;
+
       background: currentColor;
-      opacity: .7;
+      opacity: 0.7;
     }
 
     .hero h1 {
       max-width: 720px;
+
       font-size: clamp(58px, 7.2vw, 96px);
-      line-height: .94;
-      letter-spacing: -.072em;
+
+      line-height: 0.94;
+      letter-spacing: -0.072em;
+
       font-weight: 700;
     }
 
     .hero h1 em {
+      color: var(--green);
+
       font-family: var(--serif);
       font-weight: 500;
-      color: var(--green);
-      letter-spacing: -.065em;
+
+      letter-spacing: -0.065em;
     }
 
     .hero-copy {
       max-width: 500px;
+
       margin: 30px 0 34px;
+
       color: var(--muted);
+
       font-size: 15px;
       line-height: 1.8;
     }
@@ -192,140 +235,195 @@
     .button-row {
       display: flex;
       flex-wrap: wrap;
+
       gap: 11px;
     }
 
     .button {
+      min-height: 47px;
+
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 47px;
+
       padding: 0 18px;
+
       border: 1px solid var(--line);
+
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: .01em;
+
       cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 7px 20px rgba(20,25,19,.08);
+      box-shadow: 0 7px 20px rgba(20, 25, 19, 0.08);
     }
 
     .button-primary {
-      color: #fff;
+      color: white;
+
       background: var(--green);
       border-color: var(--green);
     }
 
     .button-primary:hover {
-      background: #0f3026;
+      background: var(--green-hover);
     }
 
     .button-secondary {
-      background: transparent;
       color: var(--ink);
+      background: transparent;
     }
 
     .button-secondary:hover {
       background: var(--surface);
     }
 
-    /* Product card */
+
+    /* =========================================
+       AI PRODUCT CARD
+    ========================================= */
+
     .product-card {
       display: block;
-      position: relative;
-      background: #171a16;
-      color: #f5f6f1;
-      border-radius: var(--radius);
+
       overflow: hidden;
+
+      color: #f5f6f1;
+      background: var(--dark);
+
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius);
+
       box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,.04);
-      transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+
+      transition:
+        transform 0.3s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.3s ease;
     }
 
     .product-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 30px 85px rgba(18, 24, 19, .17);
+
+      box-shadow:
+        0 30px 85px rgba(18, 24, 19, 0.17);
     }
 
     .product-topbar {
       height: 52px;
+
       padding: 0 19px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,.09);
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.09);
+
       font-family: var(--mono);
       font-size: 9px;
-      letter-spacing: .09em;
+      letter-spacing: 0.09em;
     }
 
-    .product-title { color: rgba(255,255,255,.72); }
+    .product-title {
+      color: rgba(255, 255, 255, 0.72);
+    }
 
     .product-status {
       display: flex;
       align-items: center;
       gap: 7px;
+
       color: #b8d0bf;
     }
 
     .product-status i {
       width: 6px;
       height: 6px;
+
       display: inline-block;
+
       border-radius: 50%;
+
       background: #8ab49a;
-      box-shadow: 0 0 0 4px rgba(138,180,154,.08);
     }
 
     .product-body {
       min-height: 348px;
+
       padding: 37px 34px 31px;
+
       display: flex;
       flex-direction: column;
     }
 
     .product-kicker {
-      color: rgba(255,255,255,.42);
+      color: rgba(255, 255, 255, 0.42);
+
       font-family: var(--mono);
       font-size: 9px;
-      letter-spacing: .1em;
+      letter-spacing: 0.1em;
     }
 
     .product-body h2 {
       margin: 11px 0 14px;
+
       font-size: 33px;
       line-height: 1.12;
+
       font-weight: 500;
-      letter-spacing: -.045em;
+      letter-spacing: -0.045em;
     }
 
     .product-body p {
       max-width: 350px;
-      color: rgba(255,255,255,.52);
+
+      color: rgba(255, 255, 255, 0.52);
+
       font-size: 12px;
       line-height: 1.75;
     }
 
     .product-input {
-      margin-top: auto;
       min-height: 48px;
+
+      margin-top: auto;
+
       padding: 0 14px;
+
       display: flex;
       align-items: center;
+
       gap: 10px;
-      border: 1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.32);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+      color: rgba(255, 255, 255, 0.32);
+
       font-family: var(--mono);
       font-size: 10px;
     }
 
-    .product-input span { color: #b8d0bf; font-size: 14px; }
+    .product-input span {
+      color: #b8d0bf;
+      font-size: 14px;
+    }
 
-    /* ───────────────── STATEMENT ───────────────── */
+
+    /* =========================================
+       STATEMENT
+    ========================================= */
+
     .statement {
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
@@ -333,319 +431,479 @@
 
     .statement-inner {
       min-height: 156px;
+
       display: grid;
+
       grid-template-columns: 1fr 1fr;
+
       align-items: center;
+
       gap: 50px;
     }
 
     .statement strong {
       font-size: clamp(25px, 3vw, 38px);
+
       font-weight: 600;
-      letter-spacing: -.05em;
+      letter-spacing: -0.05em;
     }
 
     .statement p {
       max-width: 420px;
+
       color: var(--muted);
+
       font-size: 13px;
       line-height: 1.75;
     }
 
-    /* ───────────────── SOLUTIONS ───────────────── */
+
+    /* =========================================
+       SOLUTIONS
+    ========================================= */
+
     .section {
       padding: 120px 0;
     }
 
     .section-head {
       display: flex;
-      justify-content: space-between;
       align-items: flex-end;
+      justify-content: space-between;
+
       gap: 40px;
+
       padding-bottom: 28px;
+
       border-bottom: 1px solid var(--line);
     }
 
-    .section-head .eyebrow { margin-bottom: 17px; }
+    .section-head .eyebrow {
+      margin-bottom: 17px;
+    }
 
     .section-head h2 {
       font-size: clamp(40px, 4.6vw, 60px);
-      line-height: .98;
+
+      line-height: 0.98;
+
       font-weight: 700;
-      letter-spacing: -.065em;
+      letter-spacing: -0.065em;
     }
 
     .section-head > p {
       max-width: 330px;
+
       color: var(--muted);
+
       font-size: 13px;
       line-height: 1.75;
-      padding-bottom: 4px;
     }
 
     .solutions-grid {
       display: grid;
+
       grid-template-columns: repeat(3, 1fr);
+
       border-left: 1px solid var(--line);
     }
 
     .solution {
       min-height: 260px;
+
+      position: relative;
+
       padding: 31px 29px;
+
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      position: relative;
-      transition: background .25s ease;
+
+      transition: background 0.25s ease;
     }
 
-    .solution:hover { background: var(--surface); }
+    .solution:hover {
+      background: var(--surface);
+    }
 
     .solution-number {
       color: var(--green);
+
       font-family: var(--mono);
       font-size: 9px;
-      letter-spacing: .08em;
+      letter-spacing: 0.08em;
     }
 
     .solution h3 {
       margin-top: 56px;
       margin-bottom: 10px;
+
       font-size: 24px;
+
       line-height: 1.15;
+
       font-weight: 600;
-      letter-spacing: -.045em;
+      letter-spacing: -0.045em;
     }
 
     .solution p {
       max-width: 280px;
+
       color: var(--muted);
+
       font-size: 12px;
       line-height: 1.75;
     }
 
-    /* ───────────────── CONTACT ───────────────── */
+
+    /* =========================================
+       CONTACT
+    ========================================= */
+
     .contact {
-      background: var(--surface);
-      border-top: 1px solid var(--line);
       padding: 112px 0;
+
+      background: var(--surface);
+
+      border-top: 1px solid var(--line);
     }
 
     .contact-grid {
       display: grid;
-      grid-template-columns: minmax(280px, .85fr) minmax(420px, 1.15fr);
+
+      grid-template-columns:
+        minmax(280px, 0.85fr)
+        minmax(420px, 1.15fr);
+
       gap: clamp(50px, 8vw, 105px);
+
       align-items: start;
     }
 
-    .contact-copy .eyebrow { margin-bottom: 18px; }
+    .contact-copy .eyebrow {
+      margin-bottom: 18px;
+    }
 
     .contact-copy h2 {
       max-width: 430px;
+
       font-size: clamp(40px, 4.3vw, 58px);
+
       line-height: 1.01;
+
       font-weight: 700;
-      letter-spacing: -.06em;
+      letter-spacing: -0.06em;
     }
 
     .contact-copy > p {
       max-width: 380px;
+
       margin-top: 20px;
+
       color: var(--muted);
+
       font-size: 13px;
       line-height: 1.8;
     }
 
     .contact-email {
       display: inline-block;
+
       margin-top: 30px;
       padding-bottom: 6px;
-      border-bottom: 1px solid var(--green);
+
       color: var(--green);
+
+      border-bottom: 1px solid var(--green);
+
       font-family: var(--mono);
       font-size: 10px;
-      transition: opacity .2s ease;
+
+      transition: opacity 0.2s ease;
     }
 
-    .contact-email:hover { opacity: .7; }
+    .contact-email:hover {
+      opacity: 0.7;
+    }
 
     .contact-form {
       padding: 34px;
+
       background: var(--bg);
+
       border: 1px solid var(--line);
-      box-shadow: 0 18px 50px rgba(24,28,21,.035);
+
+      box-shadow:
+        0 18px 50px rgba(24, 28, 21, 0.035);
     }
 
-    .form-row { margin-bottom: 18px; }
+    .form-row {
+      margin-bottom: 18px;
+    }
 
     .form-row label {
       display: block;
+
       margin-bottom: 8px;
+
       color: var(--muted);
+
       font-family: var(--mono);
       font-size: 9px;
-      letter-spacing: .1em;
+      letter-spacing: 0.1em;
+
       text-transform: uppercase;
     }
 
     .form-row input,
     .form-row textarea {
       width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 0;
-      outline: none;
-      background: transparent;
-      color: var(--ink);
+
       padding: 13px 14px;
+
+      border: 1px solid var(--line);
+
+      outline: none;
+
+      background: transparent;
+
+      color: var(--ink);
+
       font-size: 13px;
       line-height: 1.5;
-      transition: border-color .2s ease, background .2s ease;
+
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
     }
 
-    .form-row input { min-height: 47px; }
+    .form-row input {
+      min-height: 47px;
+    }
 
     .form-row textarea {
       min-height: 118px;
+
       resize: vertical;
     }
 
     .form-row input:focus,
     .form-row textarea:focus {
-      border-color: rgba(23,61,49,.65);
-      background: #fff;
+      border-color: rgba(23, 61, 49, 0.65);
+
+      background: white;
     }
 
     .form-submit {
       width: 100%;
       min-height: 48px;
-      border: 0;
     }
 
     .form-status {
       min-height: 18px;
+
       margin-top: 12px;
+
       font-size: 11px;
       line-height: 1.55;
     }
 
-    .success { color: var(--green); }
-    .error { color: #a13a2b; }
+    .success {
+      color: var(--green);
+    }
 
-    /* ───────────────── FOOTER ───────────────── */
+    .error {
+      color: #a13a2b;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
     .footer {
-      background: var(--ink);
-      color: #f6f6f0;
       padding: 52px 0 24px;
+
+      background: var(--ink);
+
+      color: #f6f6f0;
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.45fr .75fr 1fr;
+
+      grid-template-columns:
+        1.45fr 0.75fr 1fr;
+
       gap: 50px;
+
       padding-bottom: 46px;
-      border-bottom: 1px solid var(--line-light);
+
+      border-bottom:
+        1px solid var(--line-light);
     }
 
     .footer-brand {
       display: inline-flex;
+
       font-size: 21px;
       font-weight: 800;
-      letter-spacing: -.055em;
+
+      letter-spacing: -0.055em;
     }
 
     .footer-description {
       max-width: 275px;
+
       margin-top: 13px;
-      color: rgba(255,255,255,.52);
+
+      color: rgba(255, 255, 255, 0.52);
+
       font-size: 12px;
       line-height: 1.75;
     }
 
     .footer-heading {
       margin-bottom: 15px;
-      color: rgba(255,255,255,.38);
+
+      color: rgba(255, 255, 255, 0.38);
+
       font-family: var(--mono);
       font-size: 9px;
-      letter-spacing: .1em;
+      letter-spacing: 0.1em;
+
       text-transform: uppercase;
     }
 
     .footer-links {
       display: flex;
       flex-direction: column;
+
       align-items: flex-start;
+
       gap: 10px;
     }
 
     .footer-links a {
-      color: rgba(255,255,255,.72);
+      color: rgba(255, 255, 255, 0.72);
+
       font-size: 12px;
-      transition: color .2s ease;
+
+      transition: color 0.2s ease;
     }
 
-    .footer-links a:hover { color: #fff; }
+    .footer-links a:hover {
+      color: white;
+    }
 
     .footer-email {
       color: #b9d3c1 !important;
+
       font-family: var(--mono);
       font-size: 10px !important;
+
       overflow-wrap: anywhere;
     }
 
     .footer-bottom {
       padding-top: 22px;
+
       display: flex;
       justify-content: space-between;
+
       gap: 24px;
-      color: rgba(255,255,255,.38);
+
+      color: rgba(255, 255, 255, 0.38);
+
       font-family: var(--mono);
       font-size: 9px;
       line-height: 1.5;
     }
 
-    /* ───────────────── MOTION ───────────────── */
+
+    /* =========================================
+       SUBTLE ENTRY ANIMATION
+    ========================================= */
+
     .reveal {
       opacity: 0;
       transform: translateY(12px);
-      animation: reveal .7s cubic-bezier(.2,.75,.2,1) forwards;
+
+      animation:
+        reveal 0.7s cubic-bezier(.2,.75,.2,1)
+        forwards;
     }
 
-    .delay-1 { animation-delay: .09s; }
-    .delay-2 { animation-delay: .18s; }
-    .delay-3 { animation-delay: .27s; }
+    .delay-1 {
+      animation-delay: 0.09s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.18s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.27s;
+    }
 
     @keyframes reveal {
-      to { opacity: 1; transform: translateY(0); }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    /* ───────────────── RESPONSIVE ───────────────── */
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
     @media (max-width: 900px) {
+
       .hero-grid,
       .contact-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero-grid { max-width: 700px; }
+      .hero {
+        min-height: auto;
+        padding: 90px 0;
+      }
 
-      .hero { min-height: auto; padding: 90px 0; }
+      .hero-grid {
+        max-width: 700px;
+      }
 
-      .product-card { max-width: 620px; }
+      .product-card {
+        max-width: 620px;
+      }
 
       .statement-inner {
         grid-template-columns: 1fr;
+
         gap: 16px;
+
         padding: 38px 0;
       }
 
-      .section-head { display: block; }
-      .section-head > p { margin-top: 18px; }
+      .section-head {
+        display: block;
+      }
 
-      .solutions-grid { grid-template-columns: 1fr; }
+      .section-head > p {
+        margin-top: 18px;
+      }
+
+      .solutions-grid {
+        grid-template-columns: 1fr;
+      }
 
       .solution {
         min-height: 215px;
       }
 
-      .solution h3 { margin-top: 42px; }
+      .solution h3 {
+        margin-top: 42px;
+      }
 
       .footer-grid {
         grid-template-columns: 1fr 1fr;
@@ -656,326 +914,847 @@
       }
     }
 
+
     @media (max-width: 620px) {
+
       .container,
-      .nav { width: min(100% - 32px, 1140px); }
+      .nav {
+        width: min(100% - 32px, var(--container));
+      }
 
-      .site-header { height: 68px; }
-      .hero { min-height: calc(100vh - 68px); padding: 64px 0 70px; }
+      .site-header {
+        height: 68px;
+      }
 
-      .nav-links { gap: 14px; }
-      .nav-link { display: none; }
+      .hero {
+        padding: 64px 0 70px;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+
+      .nav-link {
+        display: none;
+      }
 
       .nav-button {
         padding: 9px 11px;
+
         font-size: 9px;
       }
 
-      .hero h1 { font-size: clamp(53px, 16vw, 70px); }
+      .hero h1 {
+        font-size: clamp(53px, 16vw, 70px);
+      }
 
       .hero-copy {
-        font-size: 14px;
         margin: 24px 0 28px;
+
+        font-size: 14px;
       }
 
       .product-body {
         min-height: 320px;
+
         padding: 30px 24px 24px;
       }
 
-      .product-body h2 { font-size: 29px; }
+      .product-body h2 {
+        font-size: 29px;
+      }
 
-      .section { padding: 82px 0; }
-      .contact { padding: 82px 0; }
+      .section {
+        padding: 82px 0;
+      }
 
-      .contact-form { padding: 23px 18px; }
+      .contact {
+        padding: 82px 0;
+      }
+
+      .contact-form {
+        padding: 23px 18px;
+      }
 
       .footer-grid {
         grid-template-columns: 1fr;
+
         gap: 34px;
       }
 
-      .footer-intro { grid-column: auto; }
+      .footer-intro {
+        grid-column: auto;
+      }
 
       .footer-bottom {
         flex-direction: column;
+
         gap: 8px;
       }
     }
 
+
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
+
+        transition-duration: 0.01ms !important;
       }
     }
+
   </style>
 </head>
 
 <body>
 
+
+  <!-- ================= HEADER ================= -->
+
   <header class="site-header">
+
     <nav class="nav" aria-label="Primary navigation">
+
       <a href="./" class="brand" aria-label="Meyvitt home">
         Meyvitt<span class="brand-mark">.</span>
       </a>
 
+
       <div class="nav-links">
-        <a href="AIAgent/" class="nav-link">AI Agent</a>
-        <a href="#what-we-build" class="nav-link">Solutions</a>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#contact" class="nav-button">Let's talk →</a>
+
+        <a href="AIAgent/" class="nav-link">
+          AI Agent
+        </a>
+
+        <a href="#what-we-build" class="nav-link">
+          Solutions
+        </a>
+
+        <a href="#contact" class="nav-link">
+          Contact
+        </a>
+
+        <a href="#contact" class="nav-button">
+          Let's talk →
+        </a>
+
       </div>
+
     </nav>
+
   </header>
+
+
 
   <main>
 
+
+    <!-- ================= HERO ================= -->
+
     <section class="hero">
+
       <div class="container">
+
         <div class="hero-grid">
 
+
           <div>
-            <div class="eyebrow reveal">AI Agents · Intelligent Systems</div>
+
+            <div class="eyebrow reveal">
+              AI Agents · Intelligent Systems
+            </div>
+
 
             <h1 class="reveal delay-1">
-              Put <em>AI</em><br>to work.
+              Put <em>AI</em><br>
+              to work.
             </h1>
 
+
             <p class="hero-copy reveal delay-2">
-              Meyvitt builds AI agents and intelligent automation for businesses that want to do more with less manual work.
+              Meyvitt builds AI agents and intelligent automation
+              for businesses that want to do more with less
+              manual work.
             </p>
 
+
             <div class="button-row reveal delay-3">
-              <a href="AIAgent/" class="button button-primary">Try AI Agent →</a>
-              <a href="#contact" class="button button-secondary">Build with Meyvitt →</a>
+
+              <a href="AIAgent/"
+                 class="button button-primary">
+
+                Try AI Agent →
+
+              </a>
+
+
+              <a href="#contact"
+                 class="button button-secondary">
+
+                Build with Meyvitt →
+
+              </a>
+
             </div>
+
           </div>
 
-          <!-- Same destination and functionality: AIAgent/ -->
-          <a href="AIAgent/" class="product-card reveal delay-2" aria-label="Try Meyvitt AI Agent">
+
+
+          <!-- AI Agent Preview -->
+
+          <a href="AIAgent/"
+             class="product-card reveal delay-2"
+             aria-label="Try Meyvitt AI Agent">
+
+
             <div class="product-topbar">
-              <span class="product-title">MEYVITT AI</span>
-              <span class="product-status"><i></i>ONLINE</span>
+
+              <span class="product-title">
+                MEYVITT AI
+              </span>
+
+
+              <span class="product-status">
+
+                <i></i>
+
+                ONLINE
+
+              </span>
+
             </div>
+
+
 
             <div class="product-body">
-              <span class="product-kicker">YOUR AI AGENT</span>
-              <h2>Hello. How can I help?</h2>
-              <p>Ask questions. Explore the demo. See what an AI agent can do.</p>
+
+              <span class="product-kicker">
+                YOUR AI AGENT
+              </span>
+
+
+              <h2>
+                Hello. How can I help?
+              </h2>
+
+
+              <p>
+                Ask questions. Explore the demo.
+                See what an AI agent can do.
+              </p>
+
 
               <div class="product-input">
+
                 <span>›</span>
+
                 Ask something...
+
               </div>
+
             </div>
+
+
           </a>
 
+
         </div>
+
       </div>
+
     </section>
+
+
+
+    <!-- ================= STATEMENT ================= -->
 
     <section class="statement">
+
       <div class="container">
+
         <div class="statement-inner">
-          <strong>Not another chatbot.</strong>
-          <p>We build AI that has a purpose — designed around the work your business actually needs done.</p>
+
+          <strong>
+            Not another chatbot.
+          </strong>
+
+
+          <p>
+            We build AI that has a purpose — designed around
+            the work your business actually needs done.
+          </p>
+
         </div>
+
       </div>
+
     </section>
 
-    <section class="section" id="what-we-build">
+
+
+    <!-- ================= SOLUTIONS ================= -->
+
+    <section class="section"
+             id="what-we-build">
+
       <div class="container">
 
+
         <div class="section-head">
+
           <div>
-            <div class="eyebrow">What we build</div>
-            <h2>Intelligence,<br>put to use.</h2>
+
+            <div class="eyebrow">
+              What we build
+            </div>
+
+
+            <h2>
+              Intelligence,<br>
+              put to use.
+            </h2>
+
           </div>
 
-          <p>Start with an AI agent. Build toward a more intelligent business.</p>
+
+          <p>
+            Start with an AI agent.
+            Build toward a more intelligent business.
+          </p>
+
+
         </div>
+
+
 
         <div class="solutions-grid">
 
-          <article class="solution">
-            <span class="solution-number">01</span>
-            <h3>AI Agents</h3>
-            <p>Digital workers built to answer, assist and perform specific tasks.</p>
-          </article>
 
           <article class="solution">
-            <span class="solution-number">02</span>
-            <h3>AI Automation</h3>
-            <p>Workflows that reduce repetitive work and keep things moving.</p>
+
+            <span class="solution-number">
+              01
+            </span>
+
+
+            <h3>
+              AI Agents
+            </h3>
+
+
+            <p>
+              Digital workers built to answer,
+              assist and perform specific tasks.
+            </p>
+
           </article>
 
+
+
           <article class="solution">
-            <span class="solution-number">03</span>
-            <h3>Custom Systems</h3>
-            <p>Intelligent tools built around the way your business works.</p>
+
+            <span class="solution-number">
+              02
+            </span>
+
+
+            <h3>
+              AI Automation
+            </h3>
+
+
+            <p>
+              Workflows that reduce repetitive work
+              and keep things moving.
+            </p>
+
           </article>
+
+
+
+          <article class="solution">
+
+            <span class="solution-number">
+              03
+            </span>
+
+
+            <h3>
+              Custom Systems
+            </h3>
+
+
+            <p>
+              Intelligent tools built around the way
+              your business works.
+            </p>
+
+          </article>
+
 
         </div>
+
+
       </div>
+
     </section>
 
-    <!-- Same contact form fields, endpoint and submission behavior -->
-    <section class="contact" id="contact">
+
+
+    <!-- ================= CONTACT ================= -->
+
+    <section class="contact"
+             id="contact">
+
       <div class="container">
+
         <div class="contact-grid">
 
-          <div class="contact-copy">
-            <div class="eyebrow">Let's talk</div>
-            <h2>Let's build something useful.</h2>
-            <p>Have a workflow, problem or idea where AI could help? Tell us about it.</p>
 
-            <a class="contact-email" href="mailto:meyvittconsultancy@gmail.com">
+          <div class="contact-copy">
+
+
+            <div class="eyebrow">
+              Let's talk
+            </div>
+
+
+            <h2>
+              Let's build something useful.
+            </h2>
+
+
+            <p>
+              Have a workflow, problem or idea where AI
+              could help? Tell us about it.
+            </p>
+
+
+            <a class="contact-email"
+               href="mailto:meyvittconsultancy@gmail.com">
+
               meyvittconsultancy@gmail.com
+
             </a>
+
+
           </div>
 
-          <form class="contact-form" id="contactForm" novalidate>
-            <div class="form-row">
-              <label for="cf-name">Name</label>
-              <input type="text" id="cf-name" name="name" required>
-            </div>
+
+
+          <!-- CONTACT FORM
+               Functionality intentionally unchanged -->
+
+          <form class="contact-form"
+                id="contactForm"
+                novalidate>
+
 
             <div class="form-row">
-              <label for="cf-email">Email</label>
-              <input type="email" id="cf-email" name="email" required>
+
+              <label for="cf-name">
+                Name
+              </label>
+
+
+              <input
+                type="text"
+                id="cf-name"
+                name="name"
+                required>
+
             </div>
+
+
 
             <div class="form-row">
-              <label for="cf-company">Company / Business</label>
-              <input type="text" id="cf-company" name="company">
+
+              <label for="cf-email">
+                Email
+              </label>
+
+
+              <input
+                type="email"
+                id="cf-email"
+                name="email"
+                required>
+
             </div>
+
+
 
             <div class="form-row">
-              <label for="cf-message">What would you like AI to help with?</label>
-              <textarea id="cf-message" name="message" required></textarea>
+
+              <label for="cf-company">
+                Company / Business
+              </label>
+
+
+              <input
+                type="text"
+                id="cf-company"
+                name="company">
+
             </div>
 
-            <button class="button button-primary form-submit" type="submit" id="cf-submit">
+
+
+            <div class="form-row">
+
+              <label for="cf-message">
+                What would you like AI to help with?
+              </label>
+
+
+              <textarea
+                id="cf-message"
+                name="message"
+                required></textarea>
+
+            </div>
+
+
+
+            <button
+              class="button button-primary form-submit"
+              type="submit"
+              id="cf-submit">
+
               Send message →
+
             </button>
 
-            <p class="form-status" id="cf-status" aria-live="polite"></p>
+
+
+            <p class="form-status"
+               id="cf-status"
+               aria-live="polite">
+            </p>
+
+
           </form>
 
+
         </div>
+
       </div>
+
     </section>
+
 
   </main>
 
+
+
+  <!-- ================= FOOTER ================= -->
+
   <footer class="footer">
+
     <div class="container">
+
 
       <div class="footer-grid">
 
+
         <div class="footer-intro">
-          <a href="./" class="footer-brand">
+
+          <a href="./"
+             class="footer-brand">
+
             Meyvitt<span class="brand-mark">.</span>
+
           </a>
-          <p class="footer-description">AI agents and intelligent systems for businesses.</p>
+
+
+          <p class="footer-description">
+            AI agents and intelligent systems
+            for businesses.
+          </p>
+
         </div>
 
+
+
         <div>
-          <div class="footer-heading">Explore</div>
-          <div class="footer-links">
-            <a href="./">Home</a>
-            <a href="AIAgent/">Try AI Agent</a>
-            <a href="#what-we-build">Solutions</a>
-            <a href="#contact">Contact</a>
+
+          <div class="footer-heading">
+            Explore
           </div>
-        </div>
 
-        <div>
-          <div class="footer-heading">Contact</div>
+
           <div class="footer-links">
-            <a class="footer-email" href="mailto:meyvittconsultancy@gmail.com">
-              meyvittconsultancy@gmail.com
+
+            <a href="./">
+              Home
             </a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms &amp; Conditions</a>
+
+
+            <a href="AIAgent/">
+              Try AI Agent
+            </a>
+
+
+            <a href="#what-we-build">
+              Solutions
+            </a>
+
+
+            <a href="#contact">
+              Contact
+            </a>
+
           </div>
+
         </div>
+
+
+
+        <div>
+
+          <div class="footer-heading">
+            Contact
+          </div>
+
+
+          <div class="footer-links">
+
+
+            <a class="footer-email"
+               href="mailto:meyvittconsultancy@gmail.com">
+
+              meyvittconsultancy@gmail.com
+
+            </a>
+
+
+            <a href="privacy.html">
+              Privacy Policy
+            </a>
+
+
+            <a href="terms.html">
+              Terms &amp; Conditions
+            </a>
+
+
+          </div>
+
+        </div>
+
 
       </div>
+
+
 
       <div class="footer-bottom">
-        <span>© 2026 Meyvitt. All rights reserved.</span>
-        <span>AI · Automation · Intelligent Systems</span>
+
+        <span>
+          © 2026 Meyvitt. All rights reserved.
+        </span>
+
+
+        <span>
+          AI · Automation · Intelligent Systems
+        </span>
+
+
       </div>
 
+
     </div>
+
   </footer>
 
+
+
+  <!-- ================= FORM SCRIPT ================= -->
+
   <script>
+
     /*
       Contact form functionality intentionally preserved.
       Existing Google Apps Script endpoint remains unchanged.
     */
+
     const FORM_ENDPOINT =
       'https://script.google.com/macros/s/AKfycbzpK_wGcDHC32QIy1_SsDyU_mSO8LpOzgt--QQo8YjrDNxfm0D1OXPzH68k2nYRVZ9ybw/exec';
 
-    const form = document.getElementById('contactForm');
-    const statusEl = document.getElementById('cf-status');
-    const submitBtn = document.getElementById('cf-submit');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    const form =
+      document.getElementById('contactForm');
 
-      const name = document.getElementById('cf-name').value.trim();
-      const email = document.getElementById('cf-email').value.trim();
-      const company = document.getElementById('cf-company').value.trim();
-      const message = document.getElementById('cf-message').value.trim();
 
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const statusEl =
+      document.getElementById('cf-status');
 
-      if (!name || !emailOk || !message) {
+
+    const submitBtn =
+      document.getElementById('cf-submit');
+
+
+    form.addEventListener(
+      'submit',
+      async (e) => {
+
+        e.preventDefault();
+
+
+        const name =
+          document
+            .getElementById('cf-name')
+            .value
+            .trim();
+
+
+        const email =
+          document
+            .getElementById('cf-email')
+            .value
+            .trim();
+
+
+        const company =
+          document
+            .getElementById('cf-company')
+            .value
+            .trim();
+
+
+        const message =
+          document
+            .getElementById('cf-message')
+            .value
+            .trim();
+
+
+        const emailOk =
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(email);
+
+
+
+        if (!name || !emailOk || !message) {
+
+          statusEl.textContent =
+            'Please enter your name, a valid email and a message.';
+
+
+          statusEl.className =
+            'form-status error';
+
+
+          return;
+
+        }
+
+
+
+        submitBtn.disabled = true;
+
+        submitBtn.textContent =
+          'Sending...';
+
+
         statusEl.textContent =
-          'Please enter your name, a valid email and a message.';
-        statusEl.className = 'form-status error';
-        return;
+          '';
+
+
+
+        try {
+
+
+          const formData =
+            new URLSearchParams();
+
+
+          formData.append(
+            'name',
+            name
+          );
+
+
+          formData.append(
+            'email',
+            email
+          );
+
+
+          formData.append(
+            'company',
+            company
+          );
+
+
+          formData.append(
+            'message',
+            message
+          );
+
+
+
+          await fetch(
+            FORM_ENDPOINT,
+            {
+
+              method: 'POST',
+
+              body: formData,
+
+              mode: 'no-cors'
+
+            }
+          );
+
+
+
+          statusEl.textContent =
+            "Thanks — we've received your message. We'll get back to you soon.";
+
+
+          statusEl.className =
+            'form-status success';
+
+
+          form.reset();
+
+
+
+        } catch (error) {
+
+
+          statusEl.textContent =
+            'Something went wrong. Please email meyvittconsultancy@gmail.com.';
+
+
+          statusEl.className =
+            'form-status error';
+
+
+        } finally {
+
+
+          submitBtn.disabled = false;
+
+
+          submitBtn.textContent =
+            'Send message →';
+
+        }
+
       }
+    );
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-      statusEl.textContent = '';
-
-      try {
-        const formData = new URLSearchParams();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('company', company);
-        formData.append('message', message);
-
-        await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          body: formData,
-          mode: 'no-cors'
-        });
-
-        statusEl.textContent =
-          "Thanks — we've received your message. We'll get back to you soon.";
-        statusEl.className = 'form-status success';
-        form.reset();
-
-      } catch (error) {
-        statusEl.textContent =
-          'Something went wrong. Please email meyvittconsultancy@gmail.com.';
-        statusEl.className = 'form-status error';
-
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send message →';
-      }
-    });
   </script>
+
 
 </body>
 </html>
