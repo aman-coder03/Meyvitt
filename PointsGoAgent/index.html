@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
+    >
+
+    <title>Customer & Sales AI Agent DEMO</title>
+    <!-- Meyvitt Favicon -->
+    <link rel="icon" type="image/png" href="assets/meyvitt.png">
+    <link rel="apple-touch-icon" href="assets/meyvitt.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Demo website content -->
+    <main class="demo-page">
+
+        <h1>Integration Demo</h1>
+
+        <p>
+            This space represents your existing website. 
+            This Customer & Sales AI Agent is customized according to 
+            your needs and integrated into your website.
+        </p>
+
+        <!-- Fancy arrow pointing toward AI Agent -->
+        <div class="demo-arrow">
+
+            <span class="demo-arrow-label">
+                Try the AI Agent
+            </span>
+
+            <svg
+                viewBox="0 0 220 120"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+            >
+                <path
+                    d="M 15 15
+                    C 65 10, 125 20, 145 55
+                    C 158 78, 180 92, 205 100"
+                />
+
+                <path
+                    class="arrow-head"
+                    d="M 194 91 L 208 101 L 192 106"
+                />
+            </svg>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         AI AGENT
+    ========================== -->
+
+    <!-- Floating button -->
+    <button
+    id="agentLauncher"
+    class="agent-launcher"
+    aria-label="Open AI Assistant"
+>
+
+        <span class="launcher-robot">
+
+            <span class="launcher-antenna"></span>
+
+            <span class="launcher-face">
+                <span></span>
+                <span></span>
+            </span>
+
+        </span>
+
+        <span
+            id="launcherBadge"
+            class="launcher-badge"
+        ></span>
+
+    </button>
+
+
+    <!-- Backdrop (mobile only) -->
+    <div
+        class="chat-backdrop"
+        id="chatBackdrop"
+        onclick="document.getElementById('closeChat').click()"
+    ></div>
+
+    <!-- Chat window -->
+    <section
+        id="chatWidget"
+        class="chat-widget hidden"
+    >
+
+        <!-- Header -->
+        <header class="chat-header">
+
+            <div class="agent-brand">
+
+                <div class="agent-logo">
+                    <span id="agentLogo" class="ai-robot">
+                        <span class="robot-antenna"></span>
+                        <span class="robot-face">
+                            <span class="robot-eye"></span>
+                            <span class="robot-eye"></span>
+                        </span>
+                    </span>
+                </div>
+
+                <div>
+                    <h3 id="agentName">
+                        AI Assistant
+                    </h3>
+
+                    <span class="agent-status">
+                        ● Online
+                    </span>
+                </div>
+
+            </div>
+
+            <button
+                id="closeChat"
+                class="close-button"
+                aria-label="Close chat"
+            >
+                ×
+            </button>
+
+        </header>
+
+
+        <!-- Messages -->
+        <div
+            id="chatMessages"
+            class="chat-messages"
+        >
+        </div>
+
+        <!-- Input -->
+        <form
+            id="chatForm"
+            class="chat-input-container"
+        >
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Ask me anything..."
+                autocomplete="off"
+            >
+
+            <button
+                type="submit"
+                aria-label="Send message"
+            >
+                ➤
+            </button>
+
+        </form>
+
+
+        <!-- Powered by / watermark -->
+        <div
+            id="poweredBy"
+            class="ai-powered"
+        >
+        </div>
+
+    </section>
+
+
+    <script src="js/config.js"></script>
+    <script src="js/knowledge.js"></script>
+    <script src="js/agent.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+    (function () {
+        function setAppHeight() {
+            var h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            document.documentElement.style.setProperty('--app-vh', h + 'px');
+        }
+        setAppHeight();
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setAppHeight);
+            window.visualViewport.addEventListener('scroll', setAppHeight);
+        }
+        window.addEventListener('resize', setAppHeight);
+    })();
+    </script>
+
+</body>
+</html>
