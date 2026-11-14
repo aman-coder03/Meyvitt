@@ -7,54 +7,797 @@
         content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
     >
 
-    <title>Customer & Sales AI Agent DEMO</title>
+    <title>PointsGo Assistant | Demo by Meyvitt</title>
     <!-- Meyvitt Favicon -->
     <link rel="icon" type="image/png" href="assets/meyvitt.png">
     <link rel="apple-touch-icon" href="assets/meyvitt.png">
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- Mock PointsGo page styles (namespaced pg-*, chat styles stay in style.css) -->
+    <style>
+        :root {
+            --pg-sky-50: #f0f9ff;
+            --pg-sky-100: #e0f2fe;
+            --pg-sky-200: #bae6fd;
+            --pg-sky-500: #0ea5e9;
+            --pg-sky-600: #0284c7;
+            --pg-sky-700: #0369a1;
+            --pg-ink: #020617;
+            --pg-slate-200: #e2e8f0;
+            --pg-slate-400: #94a3b8;
+            --pg-slate-500: #64748b;
+            --pg-slate-600: #475569;
+        }
+
+        .pg-body {
+            margin: 0;
+            background: #fff;
+            color: var(--pg-ink);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .pg-body *, .pg-body *::before, .pg-body *::after { box-sizing: border-box; }
+        .pg-body a { color: inherit; text-decoration: none; }
+        .pg-body button { font-family: inherit; cursor: pointer; }
+
+        /* ---------- Demo banner ---------- */
+        .pg-banner {
+            background: var(--pg-ink);
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            padding: 8px 16px;
+        }
+
+        /* ---------- Nav ---------- */
+        .pg-nav {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+        }
+
+        .pg-nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pg-logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--pg-sky-600);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .pg-pills {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 999px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .pg-pill {
+            border: 0;
+            background: transparent;
+            padding: 8px 20px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--pg-slate-500);
+            transition: all 0.2s;
+        }
+
+        .pg-pill:hover { background: rgba(255, 255, 255, 0.7); color: #0f172a; }
+
+        .pg-pill.active {
+            background: #fff;
+            color: var(--pg-ink);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(15, 23, 42, 0.08);
+        }
+
+        .pg-auth { display: flex; gap: 8px; }
+
+        .pg-btn-outline, .pg-btn-primary {
+            height: 40px;
+            padding: 0 20px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .pg-btn-outline {
+            background: #fff;
+            border: 1px solid var(--pg-slate-200);
+            color: var(--pg-slate-600);
+        }
+
+        .pg-btn-outline:hover {
+            background: var(--pg-sky-50);
+            border-color: var(--pg-sky-200);
+            color: var(--pg-sky-700);
+        }
+
+        .pg-btn-primary {
+            background: var(--pg-sky-500);
+            border: 0;
+            color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        }
+
+        .pg-btn-primary:hover { background: var(--pg-sky-600); }
+
+        /* ---------- Hero ---------- */
+        .pg-hero-wrap {
+            position: relative;
+            overflow: hidden;
+            background: rgba(240, 249, 255, 0.6);
+            padding: 20px 16px;
+        }
+
+        .pg-hero-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.25;
+            -webkit-mask-image: linear-gradient(to bottom, #fff, transparent 78%);
+            mask-image: linear-gradient(to bottom, #fff, transparent 78%);
+            pointer-events: none;
+        }
+
+        .pg-container { position: relative; max-width: 1280px; margin: 0 auto; }
+
+        .pg-hero-card {
+            width: 98%;
+            margin: 16px auto;
+            background: #fff;
+            border: 1px solid rgba(186, 230, 253, 0.8);
+            border-radius: 32px;
+            padding: 12px;
+            box-shadow: 0 14px 48px -34px rgba(14, 116, 144, 0.55);
+        }
+
+        .pg-hero-head { text-align: center; padding: 24px 16px 28px; max-width: 1000px; margin: 0 auto; }
+
+        .pg-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--pg-sky-200);
+            background: var(--pg-sky-50);
+            color: var(--pg-sky-700);
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .pg-hero-head h1 {
+            margin: 0;
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .pg-hero-head h2 {
+            margin: 8px auto 0;
+            max-width: 760px;
+            font-size: clamp(16px, 2.2vw, 18px);
+            font-weight: 600;
+            color: var(--pg-slate-500);
+        }
+
+        .pg-grid {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 12px;
+        }
+
+        .pg-panel { border-radius: 24px; padding: 28px; }
+        .pg-panel-left { background: #fff; }
+        .pg-panel-right {
+            background: rgba(240, 249, 255, 0.6);
+            border: 1px solid rgba(224, 242, 254, 0.9);
+        }
+
+        .pg-panel h3 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+        .pg-panel .pg-sub { margin: 4px 0 20px; font-size: 14px; font-style: italic; color: var(--pg-slate-500); }
+
+        /* ---------- Search form ---------- */
+        .pg-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+        .pg-field-row { display: flex; align-items: center; gap: 12px; }
+
+        .pg-icon {
+            flex: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--pg-sky-50);
+            border: 1px solid var(--pg-sky-100);
+            color: var(--pg-sky-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .pg-field { position: relative; flex: 1; }
+
+        .pg-field label {
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background: #fff;
+            padding: 0 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--pg-slate-400);
+        }
+
+        .pg-field input {
+            width: 100%;
+            height: 56px;
+            padding: 10px 14px;
+            border: 1px solid var(--pg-slate-200);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--pg-ink);
+            background: #fff;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .pg-field input:focus {
+            border-color: var(--pg-sky-500);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .pg-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border: 1px dashed var(--pg-sky-100);
+            background: rgba(240, 249, 255, 0.5);
+            border-radius: 12px;
+            font-size: 14px;
+            font-style: italic;
+            color: var(--pg-slate-500);
+            text-align: center;
+        }
+
+        .pg-radios { display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; }
+
+        .pg-radio {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .pg-radio:hover { background: #f8fafc; border-color: var(--pg-slate-200); }
+        .pg-radio input { accent-color: var(--pg-sky-600); width: 16px; height: 16px; }
+
+        .pg-date-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; }
+
+        .pg-date {
+            width: 100%;
+            height: 56px;
+            text-align: left;
+            padding: 0 16px;
+            border: 1px solid var(--pg-slate-200);
+            background: #fff;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .pg-search-btn {
+            width: 100%;
+            height: 56px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--pg-sky-500);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            transition: all 0.15s;
+        }
+
+        .pg-search-btn:hover:not(:disabled) { background: var(--pg-sky-600); }
+        .pg-search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ---------- Card brands ---------- */
+        .pg-panel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px; }
+        .pg-tap { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pg-slate-400); }
+        .pg-panel-head .pg-sub { margin-bottom: 0; }
+
+        .pg-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+
+        .pg-issuer { display: flex; flex-direction: column; gap: 12px; }
+
+        .pg-issuer-name {
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--pg-slate-400);
+        }
+
+        .pg-card-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .pg-card-btn:hover { border-color: var(--pg-sky-200); background: rgba(255, 255, 255, 0.8); }
+
+        .pg-card-art {
+            width: 100%;
+            aspect-ratio: 1.6;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 6px;
+            font-size: 9px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 12px -8px rgba(15, 23, 42, 0.6);
+            transition: transform 0.2s;
+        }
+
+        .pg-card-btn:hover .pg-card-art { transform: translateY(-2px); }
+
+        .pg-card-label {
+            margin-top: 6px;
+            min-height: 35px;
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1.25;
+            text-align: center;
+            color: var(--pg-slate-500);
+        }
+
+        .c-amex { background: linear-gradient(135deg, #64748b, #1e293b); }
+        .c-gold { background: linear-gradient(135deg, #d6a84a, #8a6a1e); }
+        .c-green { background: linear-gradient(135deg, #3f8f6b, #1b4d3a); }
+        .c-chase { background: linear-gradient(135deg, #1e3a8a, #0f1e4d); }
+        .c-cap { background: linear-gradient(135deg, #334155, #0f172a); }
+        .c-citi { background: linear-gradient(135deg, #1d4ed8, #172554); }
+        .c-bilt { background: linear-gradient(135deg, #3f3f46, #09090b); }
+        .c-wf { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
+
+        /* ---------- Video card ---------- */
+        .pg-video-card {
+            max-width: 896px;
+            margin: 28px auto 32px;
+            background: #fff;
+            border: 1px solid rgba(224, 242, 254, 0.8);
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: 0 14px 48px -34px rgba(14, 116, 144, 0.5);
+        }
+
+        .pg-video-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+        .pg-play {
+            flex: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--pg-sky-500);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border: 0;
+        }
+
+        .pg-video-head h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+        .pg-video-head p { margin: 0; font-size: 14px; font-weight: 600; color: var(--pg-slate-500); }
+
+        .pg-video-box {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            border: 0;
+            margin-bottom: 16px;
+        }
+
+        .pg-video-card > p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--pg-slate-500); }
+
+        /* ---------- Footer ---------- */
+        .pg-footer { border-top: 1px solid var(--pg-sky-200); padding: 48px 32px 24px; }
+        .pg-footer-inner { max-width: 1280px; margin: 0 auto; }
+
+        .pg-footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .pg-footer h3 { margin: 0 0 16px; font-size: 18px; font-weight: 600; }
+        .pg-footer p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--pg-slate-500); }
+        .pg-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .pg-footer li, .pg-footer li a { font-size: 14px; color: var(--pg-slate-500); }
+        .pg-footer li a:hover, .pg-link:hover { color: var(--pg-sky-600); }
+
+        .pg-sub-form { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 8px; }
+
+        .pg-sub-form input {
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid var(--pg-slate-200);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .pg-sub-form button {
+            height: 36px;
+            border: 0;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            background: linear-gradient(90deg, #0ea5e9, #2563eb);
+        }
+
+        .pg-small { font-size: 12px !important; }
+
+        .pg-sub-msg { font-size: 12px; color: var(--pg-sky-700); min-height: 16px; margin: 0; }
+
+        .pg-footer-bottom {
+            border-top: 1px solid var(--pg-slate-200);
+            padding-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--pg-slate-500);
+        }
+
+        .pg-footer-links { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .pg-link { background: none; border: 0; padding: 0; font-size: 14px; color: inherit; }
+        .pg-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 4px; }
+
+        .pg-disclaimer { margin-top: 20px; text-align: center; font-size: 12px; color: var(--pg-slate-400); }
+
+        /* ---------- Hint arrow toward the chat button ---------- */
+        .pg-hint {
+            position: fixed;
+            right: 28px;
+            bottom: 100px;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            pointer-events: none;
+            animation: pgBob 2s ease-in-out infinite;
+        }
+
+        .pg-hint.hidden { display: none; }
+
+        .pg-hint span {
+            background: var(--pg-ink);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 999px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .pg-hint svg { width: 70px; height: 40px; margin-right: 6px; }
+
+        .pg-hint path {
+            fill: none;
+            stroke: var(--pg-ink);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes pgBob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .pg-grid { grid-template-columns: 1fr; }
+            .pg-footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .pg-pills { display: none; }
+            .pg-nav-inner { padding: 0 16px; height: 68px; }
+            .pg-panel { padding: 20px; }
+            .pg-icon { display: none; }
+            .pg-cards { grid-template-columns: repeat(2, 1fr); }
+            .pg-tap { display: none; }
+            .pg-footer { padding: 32px 20px 20px; }
+            .pg-hint { display: none; }
+        }
+
+        @media (max-width: 520px) {
+            .pg-footer-grid { grid-template-columns: 1fr; }
+            .pg-btn-outline { display: none; }
+        }
+    </style>
 </head>
 
-<body>
+<body class="pg-body">
 
-    <!-- Demo website content -->
-    <main class="demo-page">
+    <!-- Demo banner -->
+    <div class="pg-banner">
+        Demo mock-up by Meyvitt, based on public pointsgo.com content. This is not the live PointsGo site.
+    </div>
 
-        <h1>Integration Demo</h1>
+    <!-- Nav -->
+    <nav class="pg-nav" aria-label="Main navigation">
+        <div class="pg-nav-inner">
 
-        <p>
-            This space represents your existing website. 
-            This Customer & Sales AI Agent is customized according to 
-            your needs and integrated into your website.
-        </p>
+            <a class="pg-logo" href="#" aria-label="PointsGo home">PointsGo</a>
 
-        <!-- Fancy arrow pointing toward AI Agent -->
-        <div class="demo-arrow">
+            <div class="pg-pills">
+                <button class="pg-pill active" type="button">Home</button>
+                <button class="pg-pill" type="button" data-ask="How does PointsGo work?">Search</button>
+                <button class="pg-pill" type="button" data-ask="Tell me about lounges">Lounges</button>
+                <button class="pg-pill" type="button" data-ask="What videos do you have?">Media</button>
+                <button class="pg-pill" type="button" data-ask="What are your prices?">Pricing</button>
+            </div>
 
-            <span class="demo-arrow-label">
-                Try the AI Agent
-            </span>
+            <div class="pg-auth">
+                <button class="pg-btn-outline" type="button" data-ask="How do I log in?">Log In</button>
+                <button class="pg-btn-primary" type="button" data-ask="How do I sign up?">Sign Up &rarr;</button>
+            </div>
 
-            <svg
-                viewBox="0 0 220 120"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-            >
-                <path
-                    d="M 15 15
-                    C 65 10, 125 20, 145 55
-                    C 158 78, 180 92, 205 100"
-                />
+        </div>
+    </nav>
 
-                <path
-                    class="arrow-head"
-                    d="M 194 91 L 208 101 L 192 106"
-                />
-            </svg>
+    <main>
 
+        <div class="pg-hero-wrap">
+            <div class="pg-container">
+                <div class="pg-hero-card">
+
+                    <div class="pg-hero-head">
+                        <div class="pg-badge">&#10024; Maximize your rewards</div>
+                        <h1>You've saved up your credit card points.</h1>
+                        <h2>Now, let PointsGo find you the best flight deals</h2>
+                    </div>
+
+                    <div class="pg-grid">
+
+                        <!-- Search -->
+                        <div class="pg-panel pg-panel-left">
+
+                            <h3>Search for your flight here:</h3>
+                            <p class="pg-sub">PointsGo is best for long flights (to Europe, Asia, Australia...)</p>
+
+                            <div class="pg-fields">
+                                <div class="pg-field-row">
+                                    <div class="pg-icon">&#9992;</div>
+                                    <div class="pg-field">
+                                        <label for="origin">Origin</label>
+                                        <input id="origin" type="text" placeholder="City or airport code" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="pg-field-row">
+                                    <div class="pg-icon">&#9992;</div>
+                                    <div class="pg-field">
+                                        <label for="destination">Destination</label>
+                                        <input id="destination" type="text" placeholder="City or airport code" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pg-info" id="pgInfo">Enter your origin and destination above</div>
+
+                            <div class="pg-radios">
+                                <label class="pg-radio">
+                                    <input type="radio" name="classType" value="economy" checked>
+                                    <span>Economy Class</span>
+                                </label>
+                                <label class="pg-radio">
+                                    <input type="radio" name="classType" value="business">
+                                    <span>First Class &amp; Business Class</span>
+                                </label>
+                            </div>
+
+                            <span class="pg-date-label">Departure date</span>
+                            <button class="pg-date" id="pgDate" type="button">&#128197; </button>
+
+                            <button class="pg-search-btn" id="pgSearch" type="button" disabled>Search</button>
+
+                        </div>
+
+                        <!-- Card brands -->
+                        <div class="pg-panel pg-panel-right">
+
+                            <div class="pg-panel-head">
+                                <div>
+                                    <h3>&#128179; Have any of these card brands?</h3>
+                                    <p class="pg-sub">PointsGo can help you book with points, step-by-step</p>
+                                </div>
+                                <span class="pg-tap">Tap to view</span>
+                            </div>
+
+                            <div class="pg-cards">
+
+                                <div class="pg-issuer">
+                                    <div class="pg-issuer-name">Amex</div>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Amex Platinum?"><span class="pg-card-art c-amex">Amex</span><span class="pg-card-label">Platinum Card</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Amex Gold?"><span class="pg-card-art c-gold">Amex</span><span class="pg-card-label">Gold Card</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Amex Green or Blue Business Plus?"><span class="pg-card-art c-green">Amex</span><span class="pg-card-label">Green Card OR Blue Biz Plus</span></button>
+                                </div>
+
+                                <div class="pg-issuer">
+                                    <div class="pg-issuer-name">Chase Bank</div>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Chase Sapphire Preferred?"><span class="pg-card-art c-chase">Chase</span><span class="pg-card-label">Sapphire Preferred</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Chase Sapphire Reserve?"><span class="pg-card-art c-chase">Chase</span><span class="pg-card-label">Sapphire Reserve</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Chase Ink Preferred?"><span class="pg-card-art c-chase">Chase</span><span class="pg-card-label">Ink Preferred</span></button>
+                                </div>
+
+                                <div class="pg-issuer">
+                                    <div class="pg-issuer-name">Capital One</div>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Capital One Venture X?"><span class="pg-card-art c-cap">Capital One</span><span class="pg-card-label">VentureX</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Capital One Venture?"><span class="pg-card-art c-cap">Capital One</span><span class="pg-card-label">Venture</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Capital One VentureOne?"><span class="pg-card-art c-cap">Capital One</span><span class="pg-card-label">VentureOne</span></button>
+                                </div>
+
+                                <div class="pg-issuer">
+                                    <div class="pg-issuer-name">Citi Bank</div>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Citi Strata Premier?"><span class="pg-card-art c-citi">Citi</span><span class="pg-card-label">Strata Premier</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Citi Strata Elite?"><span class="pg-card-art c-citi">Citi</span><span class="pg-card-label">Strata Elite</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Citi Prestige?"><span class="pg-card-art c-citi">Citi</span><span class="pg-card-label">Citi Prestige</span></button>
+                                </div>
+
+                                <div class="pg-issuer">
+                                    <div class="pg-issuer-name">Wells Fargo</div>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support the Bilt Card?"><span class="pg-card-art c-bilt">Bilt</span><span class="pg-card-label">Bilt Card</span></button>
+                                    <button class="pg-card-btn" type="button" data-ask="Do you support Wells Fargo Autograph?"><span class="pg-card-art c-wf">Wells Fargo</span><span class="pg-card-label">Autograph or Autograph Journey</span></button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Video -->
+                <div class="pg-video-card">
+                    <div class="pg-video-head">
+                        <div class="pg-play">&#9654;</div>
+                        <div>
+                            <h2>How PointsGo Works in 60 Seconds</h2>
+                            <p>Watch the 60-second demo</p>
+                        </div>
+                    </div>
+                    <button class="pg-video-box" type="button" data-ask="Show me a demo">&#9654;&nbsp; Demo video placeholder</button>
+                    <p>Search for flights using your points, find the best deals, and book directly with the airline in just a few clicks.</p>
+                </div>
+
+            </div>
         </div>
 
     </main>
+
+    <footer class="pg-footer">
+        <div class="pg-footer-inner">
+
+            <div class="pg-footer-grid">
+
+                <div>
+                    <div class="pg-logo" style="padding-left:0;margin-bottom:8px;display:inline-block;">PointsGo</div>
+                    <p>Your ultimate companion for finding the best flight deals using reward points and miles. Travel smarter, not harder.</p>
+                </div>
+
+                <div>
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" data-ask="How does PointsGo work?">Search Flights</a></li>
+                        <li><a href="#" data-ask="What are your prices?">Pricing</a></li>
+                        <li><a href="#" data-ask="Tell me about lounges">Lounges</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Support</h3>
+                    <ul>
+                        <li>&#9993; support@pointsgo.com</li>
+                        <li>&#9742; 1-800-FLIGHTS</li>
+                        <li>&#128205; San Francisco, CA</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Stay Updated</h3>
+                    <p>Get the latest flight deals and travel tips delivered to your inbox.</p>
+                    <form class="pg-sub-form" id="pgSubForm">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                    <p class="pg-sub-msg" id="pgSubMsg"></p>
+                    <p class="pg-small">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+
+            </div>
+
+            <div class="pg-footer-bottom">
+                <div>&copy; 2026 PointsGo. All rights reserved.</div>
+                <div class="pg-footer-links">
+                    <button class="pg-link" type="button" data-ask="Tell me about your privacy policy">Privacy Policy</button>
+                    <button class="pg-link" type="button" data-ask="What do your terms of service say?">Terms of Service</button>
+                    <span><span class="pg-dot"></span>All systems operational</span>
+                </div>
+            </div>
+
+            <div class="pg-disclaimer">
+                Unofficial demo by Meyvitt. Not affiliated with or endorsed by PointsGo.
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Hint pointing to the assistant -->
+    <div class="pg-hint" id="pgHint" aria-hidden="true">
+        <span>Try the PointsGo Assistant</span>
+        <svg viewBox="0 0 70 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 35 2 C 35 16, 45 26, 60 34" />
+            <path d="M 51 33 L 61 35 L 57 25" />
+        </svg>
+    </div>
 
 
     <!-- =========================
@@ -117,7 +860,7 @@
 
                 <div>
                     <h3 id="agentName">
-                        AI Assistant
+                        PointsGo Assistant
                     </h3>
 
                     <span class="agent-status">
@@ -195,6 +938,74 @@
             window.visualViewport.addEventListener('scroll', setAppHeight);
         }
         window.addEventListener('resize', setAppHeight);
+    })();
+    </script>
+
+    <!-- Demo hooks: page elements talk to the chat widget -->
+    <script>
+    (function () {
+
+        var launcher = document.getElementById('agentLauncher');
+        var widget = document.getElementById('chatWidget');
+        var input = document.getElementById('userInput');
+        var form = document.getElementById('chatForm');
+        var hint = document.getElementById('pgHint');
+
+        function hideHint() { if (hint) hint.classList.add('hidden'); }
+
+        launcher.addEventListener('click', hideHint);
+
+        /* Open the chat and send a message as if the visitor typed it */
+        function ask(text) {
+            hideHint();
+            if (widget.classList.contains('hidden')) launcher.click();
+            setTimeout(function () {
+                input.value = text;
+                form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+            }, 150);
+        }
+
+        document.querySelectorAll('[data-ask]').forEach(function (el) {
+            el.addEventListener('click', function (e) {
+                e.preventDefault();
+                ask(el.getAttribute('data-ask'));
+            });
+        });
+
+        /* Search box: enable the button once both fields are filled */
+        var origin = document.getElementById('origin');
+        var dest = document.getElementById('destination');
+        var btn = document.getElementById('pgSearch');
+        var info = document.getElementById('pgInfo');
+
+        function refresh() {
+            var o = origin.value.trim();
+            var d = dest.value.trim();
+            btn.disabled = !(o && d);
+            info.textContent = (o && d)
+                ? 'Ready to search ' + o + ' to ' + d
+                : 'Enter your origin and destination above';
+        }
+
+        origin.addEventListener('input', refresh);
+        dest.addEventListener('input', refresh);
+
+        btn.addEventListener('click', function () {
+            ask('How do I search flights from ' + origin.value.trim() + ' to ' + dest.value.trim() + '?');
+        });
+
+        /* Default departure date = today, like the real site */
+        document.getElementById('pgDate').appendChild(
+            document.createTextNode(new Date().toLocaleDateString('en-US'))
+        );
+
+        /* Newsletter: demo only */
+        document.getElementById('pgSubForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('pgSubMsg').textContent = 'Demo only: no email was sent.';
+            e.target.reset();
+        });
+
     })();
     </script>
 
