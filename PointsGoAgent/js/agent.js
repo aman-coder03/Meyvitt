@@ -1,3 +1,19 @@
+/* =========================================================
+   STOPWORDS
+   Common words ignored when scoring questions, so "how",
+   "do" and "you" no longer push the wrong answer to the top.
+========================================================== */
+
+const STOPWORDS = new Set(
+    (
+        "a an the i you your my me we is it its are am be do does did can " +
+        "could would should will to of in on for with at by from and or but " +
+        "if so this that these those what which who how when where why there " +
+        "here have has had not no yes please just about into than then also any some"
+    ).split(" ")
+);
+
+
 class AIAgent {
 
     constructor(knowledge, config) {
@@ -7,6 +23,8 @@ class AIAgent {
         this.config = config;
 
         this.conversation = [];
+
+        this._normCache = new Map();
 
         // Sales conversation state
         this.salesState = {
@@ -34,127 +52,84 @@ class AIAgent {
 
         const text = this.normalize(message);
 
-
         this.conversation.push({
             role: "user",
             message: message
         });
 
 
-        /* =========================
-           GREETING
-        ========================== */
+        /* GREETING */
 
-        const greeting =
-            this.checkGreeting(text);
+        const greeting = this.checkGreeting(text);
 
         if (greeting) {
-
-            return {
-                type: "text",
-                text: greeting
-            };
-
+            return { type: "text", text: greeting };
         }
 
 
-        /* =========================
-            SALES CONVERSATION
-        ========================== */
+        /* SALES CONVERSATION (follow-ups and preferences) */
 
-        const salesResponse =
-            this.handleSalesConversation(text);
+        const salesResponse = this.handleSalesConversation(text);
 
         if (salesResponse) {
-
             return salesResponse;
+        }
 
+        // A discovery question only lasts one turn
+        if (this.salesState.stage === "discovery") {
+            this.salesState.stage = "start";
         }
 
 
-        /* =========================
-        SALES DISCOVERY
-        ========================= */
+        /* SALES DISCOVERY ("help me choose") */
 
-        const discovery =
-            this.handleDiscovery(text);
+        const discovery = this.handleDiscovery(text);
 
         if (discovery) {
             return discovery;
         }
 
 
-        /* =========================
-        COMPARISON
-        ========================= */
+        /* COMPARISON */
 
-        if (
-            this.isComparisonRequest(text)
-        ) {
+        if (this.isComparisonRequest(text)) {
 
-            this.salesState.stage =
-                "comparison";
+            this.salesState.stage = "comparison";
 
             this.salesState.comparedProducts =
                 this.findProductsForComparison(text);
 
             return {
                 type: "comparison",
-                products:
-                    this.salesState.comparedProducts,
-                recommendedId:
-                    this.getRecommendedIdFor(
-                        this.salesState.comparedProducts
-                    )
+                products: this.salesState.comparedProducts,
+                recommendedId: this.getRecommendedIdFor(
+                    this.salesState.comparedProducts
+                )
             };
 
         }
 
 
-        /* =========================
-        INTENT DETECTION
-        ========================= */
+        /* INTENT + PRODUCT DETECTION */
 
-        const intent =
-            this.findBestIntent(text);
+        const intent = this.findBestIntent(text);
 
-
-        /* =========================
-        PRODUCT DETECTION
-        ========================== */
-
-        const product =
-            this.findProduct(text);
+        const product = this.findProduct(text);
 
         if (product) {
-
-            return {
-                type: "product",
-                product: product
-            };
-
+            return { type: "product", product: product };
         }
 
 
-        /* =========================
-           FAQ
-        ========================= */
+        /* FAQ */
 
         if (intent) {
 
-            let answer =
-                intent.answer;
+            let answer = intent.answer;
 
+            if (intent.id === "support" || intent.id === "contact") {
 
-            /* Contact / support */
-
-            if (
-                intent.id === "support" ||
-                intent.id === "contact"
-            ) {
-
-                const contact =
-                    this.knowledge.company.contact;
+                const contact = this.knowledge.company.contact;
 
                 answer +=
                     `\n\nEmail: ${contact.email}` +
@@ -162,95 +137,96 @@ class AIAgent {
 
             }
 
-
-            return {
-                type: "text",
-                text: answer
-            };
+            return { type: "text", text: answer };
 
         }
 
 
-        /* =========================
-           GENERAL PRODUCT QUESTION
-        ========================= */
+        /* GENERAL QUESTION ABOUT WHAT IS OFFERED */
 
         if (
             this.containsAny(
                 text,
-                [
-                    "product",
-                    "products",
-                    "sell",
-                    "selling",
-                    "offer",
-                    "buy"
-                ]
+                ["product", "products", "sell", "selling", "offer", "buy"]
             )
         ) {
 
             return {
                 type: "text",
-
                 text:
-                    "We offer a range of products designed to meet different customer needs. I can show you the available options or help you compare them."
+                    "PointsGo helps you find award flights you can book with credit card points and miles. I can explain how it works, which cards are supported or help you pick a plan."
             };
 
         }
 
 
-        /* =========================
-           GENERAL HELP
-        ========================= */
+        /* GENERAL HELP */
 
-        if (
-            this.containsAny(
-                text,
-                [
-                    "help",
-                    "assist",
-                    "assistance"
-                ]
-            )
-        ) {
+        if (this.containsAny(text, ["help", "assist", "assistance"])) {
 
             return {
                 type: "text",
-
                 text:
-                    "Of course. I can help with products, pricing, recommendations, delivery, returns, orders, payments and support."
+                    "Of course. I can help with how PointsGo works, supported cards, plans and pricing, booking with points, accounts and support."
             };
 
         }
 
 
-        /* =========================
-           FALLBACK
-        ========================= */
+        /* FALLBACK */
 
-        return {
-
-            type: "text",
-
-            text:
-                this.getFallback()
-
-        };
+        return { type: "text", text: this.getFallback() };
 
     }
 
 
     /* =========================================================
-       NORMALIZE
+       TEXT HELPERS
     ========================================================== */
 
+    /* Lowercase, drop apostrophes (can't -> cant), turn other symbols into spaces */
     normalize(text) {
 
-        return text
+        return String(text)
             .toLowerCase()
-            .trim()
-            .replace(/[?!.,;:]/g, "")
-            .replace(/\s+/g, " ");
+            .replace(/[\u2019'`]/g, "")
+            .replace(/[^a-z0-9\s]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+    }
+
+
+    /* Normalize keywords once instead of on every message */
+    normCached(text) {
+
+        let value = this._normCache.get(text);
+
+        if (value === undefined) {
+            value = this.normalize(text);
+            this._normCache.set(text, value);
+        }
+
+        return value;
+
+    }
+
+
+    /* Whole-word phrase match: "api" no longer matches "capital" */
+    phraseIn(text, phrase) {
+
+        return (" " + text + " ").includes(" " + phrase + " ");
+
+    }
+
+
+    containsAny(text, words) {
+
+        const normalizedText = this.normalize(text);
+
+        return words.some(
+            word => this.phraseIn(normalizedText, this.normCached(word))
+        );
 
     }
 
@@ -262,74 +238,50 @@ class AIAgent {
     checkGreeting(text) {
 
         const greetings = [
-            "hi",
-            "hello",
-            "hey",
-            "hiya",
-            "good morning",
-            "good afternoon",
-            "good evening"
+            "hi", "hello", "hey", "hiya", "howdy", "yo",
+            "good morning", "good afternoon", "good evening",
+            "hi there", "hello there", "hey there"
         ];
-
 
         if (greetings.includes(text)) {
-
             return this.config.assistant.greeting;
-
         }
 
+        const words = text.split(" ");
 
-        const generalGreetingPatterns = [
-            "hi ",
-            "hello ",
-            "hey ",
-            "hiya "
-        ];
+        const startsWithGreeting =
+            ["hi", "hello", "hey", "hiya", "howdy"].includes(words[0]);
 
-
-        const isGreeting =
-            generalGreetingPatterns.some(
-                pattern =>
-                    text.startsWith(pattern)
-            );
-
-
-        if (isGreeting) {
-
-            // General conversational opener
-            if (
-                this.containsAny(
-                    text,
-                    [
-                        "can you help",
-                        "could you help",
-                        "are you able to help",
-                        "i need some help",
-                        "can you assist",
-                        "could you assist"
-                    ]
-                )
-            ) {
-
-                return this.config.assistant.greeting;
-
-            }
-
+        if (startsWithGreeting && words.length <= 3) {
+            return this.config.assistant.greeting;
         }
 
+        if (
+            startsWithGreeting &&
+            this.containsAny(text, [
+                "can you help",
+                "could you help",
+                "are you able to help",
+                "i need some help",
+                "can you assist",
+                "could you assist"
+            ])
+        ) {
+            return this.config.assistant.greeting;
+        }
 
         return null;
 
     }
 
+
     /* =========================================================
-        COMPARISON DETECTION
+       COMPARISON DETECTION
     ========================================================== */
 
     isComparisonRequest(text) {
 
-        const comparisonPhrases = [
-
+        const phrases = [
             "compare",
             "comparison",
             "compare products",
@@ -338,156 +290,74 @@ class AIAgent {
             "compare these products",
             "compare the options",
             "compare options",
+            "compare plans",
             "product comparison",
-
             "difference between",
             "differences between",
             "what is the difference",
             "whats the difference",
-
             "which is better",
             "which product is better",
             "which one is better"
-
         ];
 
-
-        return comparisonPhrases.some(
-            phrase =>
-                text.includes(
-                    phrase
-                )
+        return phrases.some(
+            phrase => this.phraseIn(text, this.normCached(phrase))
         );
 
     }
 
 
     /* =========================================================
-        FIND PRODUCTS TO COMPARE
+       FIND PRODUCTS TO COMPARE
     ========================================================== */
 
     findProductsForComparison(text) {
 
         /* 1. If the customer named specific products, compare those */
 
-        const scored =
-            this.knowledge.products.map(
-                product => {
-
-                    let score = 0;
-
-
-                    for (
-                        const keyword
-                        of product.keywords || []
-                    ) {
-
-                        if (
-                            text.includes(
-                                this.normalize(keyword)
-                            )
-                        ) {
-
-                            score += 30;
-
-                        }
-
-                    }
-
-
-                    for (
-                        const synonym
-                        of product.synonyms || []
-                    ) {
-
-                        if (
-                            text.includes(
-                                this.normalize(synonym)
-                            )
-                        ) {
-
-                            score += 10;
-
-                        }
-
-                    }
-
-
-                    return {
-                        product,
-                        score
-                    };
-
-                }
-            );
-
-
-        const matched =
-            scored
-                .filter(entry => entry.score >= 20)
-                .sort((a, b) => b.score - a.score)
-                .map(entry => entry.product);
-
+        const matched = this.knowledge.products
+            .map(product => ({
+                product,
+                score: this.scoreProduct(text, product)
+            }))
+            .filter(entry => entry.score >= 20)
+            .sort((a, b) => b.score - a.score)
+            .map(entry => entry.product);
 
         if (matched.length >= 2) {
-
             return matched.slice(0, 2);
-
         }
 
 
-        /* 2. If we're mid sales-conversation, compare the last
-              recommendation against a different product */
+        /* 2. Mid sales-conversation: last recommendation vs a different one */
 
-        if (
-            this.salesState.lastRecommendedProduct
-        ) {
+        if (this.salesState.lastRecommendedProduct) {
 
-            const current =
-                this.salesState.lastRecommendedProduct;
+            const current = this.salesState.lastRecommendedProduct;
 
-            const alternative =
-                this.knowledge.products.find(
-                    product =>
-                        product.id !== current.id
-                );
+            const alternative = this.knowledge.products.find(
+                product => product.id !== current.id
+            );
 
             if (alternative) {
-
-                return [
-                    current,
-                    alternative
-                ];
-
+                return [current, alternative];
             }
 
         }
 
 
-        /* 3. Fall back to cheapest vs. premium — a more
-              meaningful default than array order */
+        /* 3. Cheapest vs premium */
 
-        const cheapest =
-            this.getCheapestProduct();
+        const cheapest = this.getCheapestProduct();
+        const premium = this.getPremiumProduct();
 
-        const premium =
-            this.getPremiumProduct();
-
-        if (
-            cheapest &&
-            premium &&
-            cheapest.id !== premium.id
-        ) {
-
-            return [
-                cheapest,
-                premium
-            ];
-
+        if (cheapest && premium && cheapest.id !== premium.id) {
+            return [cheapest, premium];
         }
 
 
-        /* 4. Last resort — whatever is in the catalog */
+        /* 4. Last resort */
 
         return this.knowledge.products.slice(0, 2);
 
@@ -500,164 +370,82 @@ class AIAgent {
 
     findBestIntent(text) {
 
-        let bestIntent = null;
+        const tokens = [
+            ...new Set(
+                text.split(" ").filter(t => t && !STOPWORDS.has(t))
+            )
+        ];
 
+        let bestIntent = null;
         let highestScore = 0;
 
+        for (const faq of this.knowledge.faqs) {
 
-        for (
-            const faq
-            of this.knowledge.faqs
-        ) {
+            let evidence = 0;
 
-            let score = 0;
+            const keywordWords = new Set();
 
+            /* Phrase matches (whole words only) */
 
-            /* Exact phrase matching */
+            for (const keyword of faq.keywords || []) {
 
-            for (
-                const keyword
-                of faq.keywords || []
-            ) {
+                const nk = this.normCached(keyword);
 
-                const normalizedKeyword =
-                    this.normalize(keyword);
-
-
-                if (
-                    text === normalizedKeyword
-                ) {
-
-                    score += 100;
-
+                if (text === nk) {
+                    evidence += 100;
+                }
+                else if (this.phraseIn(text, nk)) {
+                    evidence += 25;
                 }
 
-                else if (
-                    text.includes(
-                        normalizedKeyword
-                    )
-                ) {
+                nk.split(" ").forEach(w => {
+                    if (!STOPWORDS.has(w)) keywordWords.add(w);
+                });
 
-                    score += 25;
+            }
 
+            /* Synonyms */
+
+            for (const synonym of faq.synonyms || []) {
+
+                if (this.phraseIn(text, this.normCached(synonym))) {
+                    evidence += 8;
                 }
 
             }
 
+            /* Token overlap: each meaningful word counts once per intent */
 
-            /* Synonym matching */
+            for (const token of tokens) {
 
-            for (
-                const synonym
-                of faq.synonyms || []
-            ) {
-
-                const normalizedSynonym =
-                    this.normalize(synonym);
-
-
-                if (
-                    text.includes(
-                        normalizedSynonym
-                    )
-                ) {
-
-                    score += 8;
-
+                if (keywordWords.has(token)) {
+                    evidence += 3;
+                    continue;
                 }
 
-            }
-
-
-            /* Token matching */
-
-            const tokens =
-                text.split(" ");
-
-
-            for (
-                const keyword
-                of faq.keywords || []
-            ) {
-
-                const keywordTokens =
-                    this.normalize(keyword)
-                        .split(" ");
-
-
-                for (
-                    const token
-                    of tokens
-                ) {
-
-                    for (
-                        const keywordToken
-                        of keywordTokens
-                    ) {
-
-                        if (
-                            token ===
-                            keywordToken
-                        ) {
-
-                            score += 3;
-
-                        }
-
-                        else if (
-                            this.similar(
-                                token,
-                                keywordToken
-                            )
-                        ) {
-
-                            score += 1;
-
-                        }
-
+                for (const word of keywordWords) {
+                    if (this.similar(token, word)) {
+                        evidence += 1;
+                        break;
                     }
-
                 }
 
             }
 
+            /* Priority only breaks ties; real evidence is required */
 
-            /* Priority */
+            if (evidence < 8) {
+                continue;
+            }
 
-            score +=
-                (faq.priority || 0);
+            const score = evidence + (faq.priority || 0);
 
-
-            if (
-                score > highestScore
-            ) {
-
-                highestScore =
-                    score;
-
-                bestIntent =
-                    faq;
-
+            if (score > highestScore) {
+                highestScore = score;
+                bestIntent = faq;
             }
 
         }
-
-
-        /*
-         * Ignore very weak matches.
-         * Priority alone must not be enough to pass —
-         * there must be some real keyword/synonym/token evidence.
-         */
-
-        if (
-            highestScore < 12 ||
-            highestScore <= (bestIntent ? (bestIntent.priority || 0) : 0)
-        ) {
-
-            return null;
-
-        }
-
 
         return bestIntent;
 
@@ -665,214 +453,221 @@ class AIAgent {
 
 
     /* =========================================================
-    SALES DISCOVERY
-    ========================================================= */
+       SALES DISCOVERY
+    ========================================================== */
 
     handleDiscovery(text) {
 
         const discoveryPhrases = [
-
             "help me choose",
             "help me decide",
             "help me pick",
             "i dont know what to choose",
-            "i don't know what to choose",
             "which product should i buy",
+            "which plan should i buy",
+            "which plan should i choose",
             "what should i buy",
             "which product is right for me",
+            "which plan is right for me",
             "help me find a product",
+            "help me find a plan",
             "recommend a product",
+            "recommend a plan",
             "recommend something",
             "looking for a product",
             "looking for something",
             "i need a product",
-            "help choosing a product"
-
+            "help choosing a product",
+            "help choosing a plan"
         ];
 
-
-        if (
-            !this.containsAny(
-                text,
-                discoveryPhrases
-            )
-        ) {
-
+        if (!this.containsAny(text, discoveryPhrases)) {
             return null;
-
         }
 
-
-        this.salesState.stage =
-            "discovery";
-
-        this.salesState.pendingQuestion =
-            "preference";
-
+        this.salesState.stage = "discovery";
+        this.salesState.pendingQuestion = "preference";
 
         return {
-
             type: "text",
-
             text:
-                "Absolutely. I can help you choose. What matters most to you — keeping the price low, getting more features, or having something simple for everyday use?"
-
+                "Absolutely. I can help you choose. What matters most to you: keeping the price low, getting more features, or having something simple for everyday use?"
         };
 
     }
 
 
-
     /* =========================================================
-    SALES CONVERSATION ENGINE
-    ========================================================= */
+       SALES CONVERSATION ENGINE
+    ========================================================== */
+
+    /* Shared helper: remember what we recommended and show the product card */
+    recommend(product, preference, salesMessage) {
+
+        this.salesState.customerPreference = preference;
+        this.salesState.lastRecommendedProduct = product;
+        this.salesState.pendingQuestion = null;
+        this.salesState.stage = "recommendation";
+
+        return {
+            type: "product",
+            product: product,
+            salesMessage: salesMessage
+        };
+
+    }
+
 
     handleSalesConversation(text) {
 
-        /* =====================================================
-        FOLLOW-UP: WHY THIS PRODUCT?
-        Highest priority once a recommendation exists
-        ===================================================== */
+        /* Questions about flights or cabins are not plan questions
+           ("cheap flights", "premium cabin", "basic economy") */
 
         if (
-            this.salesState.stage === "recommendation" &&
-            this.containsAny(
-                text,
-                [
+            this.containsAny(text, [
+                "flight", "flights", "ticket", "tickets", "airfare",
+                "cabin", "economy", "business class", "first class"
+            ])
+        ) {
+            return null;
+        }
+
+        /* Long questions never trigger plan cards, so words like "why",
+           "easy" or "budget" inside e.g. "why is my search stuck" are ignored. */
+
+        const wordCount = text.split(" ").length;
+
+        const inFlow = ["recommendation", "comparison"].includes(
+            this.salesState.stage
+        );
+
+        /* Clear multi-word follow-ups are allowed to be a little longer */
+
+        const strongFollowUp = inFlow && this.containsAny(text, [
+            "which one",
+            "which do you recommend",
+            "which would you recommend",
+            "what do you recommend",
+            "which should i choose",
+            "which should i buy",
+            "which is best for me",
+            "what would you recommend",
+            "recommend one",
+            "why do you recommend",
+            "tell me more",
+            "more information",
+            "anything cheaper",
+            "something cheaper",
+            "more features",
+            "better features",
+            "more advanced"
+        ]);
+
+        const limit =
+            this.salesState.stage === "discovery"
+                ? 99
+                : (inFlow ? (strongFollowUp ? 8 : 4) : 3);
+
+        if (wordCount > limit) {
+
+            if (inFlow) {
+                this.salesState.stage = "start";
+            }
+
+            return null;
+
+        }
+
+        const stage = this.salesState.stage;
+
+
+        /* ---------- FOLLOW-UPS (a recommendation already exists) ---------- */
+
+        if (stage === "recommendation") {
+
+            /* WHY THIS PRODUCT? */
+
+            if (
+                this.containsAny(text, [
                     "why",
                     "why this",
                     "why this one",
                     "why do you recommend",
                     "why recommend",
                     "why this product",
+                    "why this plan",
                     "tell me more",
                     "more about it",
                     "more information"
-                ]
-            )
-        ) {
+                ])
+            ) {
 
-            const product =
-                this.salesState.lastRecommendedProduct;
+                const product = this.salesState.lastRecommendedProduct;
 
-            if (product) {
+                if (product) {
 
-                return {
+                    return {
+                        type: "text",
+                        text:
+                            `${product.name} is a good fit because ${product.description} ` +
+                            `It's priced at ${product.price}. ` +
+                            `If you'd like, I can also compare it with another option.`
+                    };
 
-                    type: "text",
-
-                    text:
-                        `${product.name} is a good fit because ${product.description} ` +
-                        `It's priced at ${product.price}. ` +
-                        `If you'd like, I can also compare it with another option.`
-
-                };
+                }
 
             }
 
-        }
 
+            /* CHEAPER OPTION */
 
-        /* =====================================================
-        FOLLOW-UP: CHEAPER OPTION
-        ===================================================== */
-
-        if (
-            this.salesState.stage === "recommendation" &&
-            this.containsAny(
-                text,
-                [
+            if (
+                this.containsAny(text, [
                     "cheaper",
                     "cheaper option",
+                    "cheaper plan",
                     "cheaper product",
                     "less expensive",
                     "lower price",
                     "anything cheaper",
                     "something cheaper",
                     "more affordable"
-                ]
-            )
-        ) {
-
-            const currentProduct =
-                this.salesState.lastRecommendedProduct;
-
-            const cheapestProduct =
-                this.getCheapestProduct();
-
-            if (
-                !currentProduct ||
-                !cheapestProduct
+                ])
             ) {
 
-                return null;
+                const current = this.salesState.lastRecommendedProduct;
+                const cheapest = this.getCheapestProduct();
+
+                if (!current || !cheapest) {
+                    return null;
+                }
+
+                if (
+                    this.getNumericPrice(cheapest.price, cheapest.priceValue) >=
+                    this.getNumericPrice(current.price, current.priceValue)
+                ) {
+
+                    return {
+                        type: "text",
+                        text:
+                            `${current.name} is already our most affordable option at ${current.price}. There isn't a cheaper option available at the moment.`
+                    };
+
+                }
+
+                return this.recommend(
+                    cheapest,
+                    "price",
+                    `Yes, this is a more affordable option. ${cheapest.name} is available for ${cheapest.price}.`
+                );
 
             }
 
 
-            const currentPrice =
-                this.getNumericPrice(
-                    currentProduct.price,
-                    currentProduct.priceValue
-                );
-
-            const cheapestPrice =
-                this.getNumericPrice(
-                    cheapestProduct.price,
-                    cheapestProduct.priceValue
-                );
-
+            /* MORE FEATURES */
 
             if (
-                cheapestPrice >= currentPrice
-            ) {
-
-                return {
-
-                    type: "text",
-
-                    text:
-                        `${currentProduct.name} is already our most affordable option at ${currentProduct.price}. There isn't a cheaper option available at the moment.`
-
-                };
-
-            }
-
-
-            this.salesState.customerPreference =
-                "price";
-
-            this.salesState.lastRecommendedProduct =
-                cheapestProduct;
-
-            this.salesState.stage =
-                "recommendation";
-
-
-            return {
-
-                type: "product",
-
-                product:
-                    cheapestProduct,
-
-                salesMessage:
-                    `Yes — this is a more affordable option. ${cheapestProduct.name} is available for ${cheapestProduct.price}.`
-
-            };
-
-        }
-
-
-        /* =====================================================
-        FOLLOW-UP: MORE FEATURES
-        ===================================================== */
-
-        if (
-            this.salesState.stage === "recommendation" &&
-            this.containsAny(
-                text,
-                [
+                this.containsAny(text, [
                     "more features",
                     "better features",
                     "more advanced",
@@ -882,271 +677,142 @@ class AIAgent {
                     "higher quality",
                     "professional",
                     "best features"
-                ]
-            )
-        ) {
+                ])
+            ) {
 
-            const premiumProduct =
-                this.getPremiumProduct();
+                const premium = this.getPremiumProduct();
 
-            if (!premiumProduct) {
-                return null;
+                if (!premium) {
+                    return null;
+                }
+
+                return this.recommend(
+                    premium,
+                    "features",
+                    `If you'd rather have more features, I'd recommend ${premium.name}. It's our more advanced option and is better suited to customers who want additional functionality.`
+                );
+
             }
 
 
-            this.salesState.customerPreference =
-                "features";
+            /* SIMPLE OPTION */
 
-            this.salesState.lastRecommendedProduct =
-                premiumProduct;
-
-            this.salesState.stage =
-                "recommendation";
-
-
-            return {
-
-                type: "product",
-
-                product:
-                    premiumProduct,
-
-                salesMessage:
-                    `If you'd rather have more features, I'd recommend ${premiumProduct.name}. It's our more advanced option and is better suited to customers who want additional functionality.`
-
-            };
-
-        }
-
-
-        /* =====================================================
-        FOLLOW-UP: SIMPLE OPTION
-        ===================================================== */
-
-        if (
-            this.salesState.stage === "recommendation" &&
-            this.containsAny(
-                text,
-                [
+            if (
+                this.containsAny(text, [
                     "simple",
                     "basic",
                     "straightforward",
                     "easy",
                     "everyday",
                     "nothing complicated"
-                ]
-            )
-        ) {
+                ])
+            ) {
 
-            const product =
-                this.getCheapestProduct();
+                const product = this.getCheapestProduct();
 
-            if (!product) {
-                return null;
-            }
+                if (!product) {
+                    return null;
+                }
 
-
-            this.salesState.customerPreference =
-                "simple";
-
-            this.salesState.lastRecommendedProduct =
-                product;
-
-            this.salesState.stage =
-                "recommendation";
-
-
-            return {
-
-                type: "product",
-
-                product:
+                return this.recommend(
                     product,
+                    "simple",
+                    `For something simple and practical, I'd recommend ${product.name}. It's a straightforward option without paying for features you may not need.`
+                );
 
-                salesMessage:
-                    `For something simple and practical, I'd recommend ${product.name}. It's a straightforward option for everyday use without paying for features you may not need.`
-
-            };
+            }
 
         }
 
 
-        /* =====================================================
-        INITIAL CUSTOMER PREFERENCE
-        Only runs when NOT already in a recommendation
-        conversation.
-        ===================================================== */
+        /* ---------- INITIAL PREFERENCE (start or discovery only) ---------- */
 
-        if (
-            this.salesState.stage === "start" ||
-            this.salesState.stage === "discovery"
-        ) {
+        if (stage === "start" || stage === "discovery") {
 
-            /* =========================
-            AFFORDABLE
-            ========================== */
+            /* AFFORDABLE */
 
             if (
-                this.containsAny(
-                    text,
-                    [
-                        "cheap",
-                        "affordable",
-                        "budget",
-                        "lowest price",
-                        "save money",
-                        "less expensive",
-                        "lower price",
-                        "on a budget",
-                        "not too expensive"
-                    ]
-                )
+                this.containsAny(text, [
+                    "cheap",
+                    "affordable",
+                    "budget",
+                    "lowest price",
+                    "save money",
+                    "less expensive",
+                    "lower price",
+                    "on a budget",
+                    "not too expensive"
+                ])
             ) {
 
-                this.salesState.customerPreference =
-                    "price";
-
-
-                const product =
-                    this.getCheapestProduct();
-
+                const product = this.getCheapestProduct();
 
                 if (product) {
 
-                    this.salesState.lastRecommendedProduct =
-                        product;
-
-                    this.salesState.pendingQuestion =
-                        null;
-
-                    this.salesState.stage =
-                        "recommendation";
-
-
-                    return {
-
-                        type: "product",
-
-                        product:
-                            product,
-
-                        salesMessage:
-                            `If keeping the price down is your priority, I'd recommend ${product.name}. At ${product.price}, it's our most affordable option and is a good choice for everyday use.`
-
-                    };
+                    return this.recommend(
+                        product,
+                        "price",
+                        `If keeping the price down is your priority, I'd recommend ${product.name}. At ${product.price}, it's our most affordable option.`
+                    );
 
                 }
 
             }
 
 
-            /* =========================
-            PREMIUM
-            ========================== */
+            /* PREMIUM */
 
             if (
-                this.containsAny(
-                    text,
-                    [
-                        "premium",
-                        "advanced",
-                        "more features",
-                        "better features",
-                        "more powerful",
-                        "higher quality",
-                        "best features",
-                        "professional"
-                    ]
-                )
+                this.containsAny(text, [
+                    "premium",
+                    "advanced",
+                    "more features",
+                    "better features",
+                    "more powerful",
+                    "higher quality",
+                    "best features",
+                    "professional"
+                ])
             ) {
 
-                this.salesState.customerPreference =
-                    "features";
-
-
-                const product =
-                    this.getPremiumProduct();
-
+                const product = this.getPremiumProduct();
 
                 if (product) {
 
-                    this.salesState.lastRecommendedProduct =
-                        product;
-
-                    this.salesState.pendingQuestion =
-                        null;
-
-                    this.salesState.stage =
-                        "recommendation";
-
-
-                    return {
-
-                        type: "product",
-
-                        product:
-                            product,
-
-                        salesMessage:
-                            `If you'd rather have more features, I'd recommend ${product.name}. It's the more advanced option and is better suited to customers who want additional functionality.`
-
-                    };
+                    return this.recommend(
+                        product,
+                        "features",
+                        `If you'd rather have more features, I'd recommend ${product.name}. It's the more advanced option and is better suited to customers who want additional functionality.`
+                    );
 
                 }
 
             }
 
 
-            /* =========================
-            SIMPLE
-            ========================== */
+            /* SIMPLE */
 
             if (
-                this.containsAny(
-                    text,
-                    [
+                this.containsAny(text, [
+                    "simple",
+                    "basic",
+                    "straightforward",
+                    "easy",
+                    "everyday",
+                    "just need something simple",
+                    "nothing complicated"
+                ])
+            ) {
+
+                const product = this.getCheapestProduct();
+
+                if (product) {
+
+                    return this.recommend(
+                        product,
                         "simple",
-                        "basic",
-                        "straightforward",
-                        "easy",
-                        "everyday",
-                        "just need something simple",
-                        "nothing complicated"
-                    ]
-                )
-            ) {
-
-                this.salesState.customerPreference =
-                    "simple";
-
-
-                const product =
-                    this.getCheapestProduct();
-
-
-                if (product) {
-
-                    this.salesState.lastRecommendedProduct =
-                        product;
-
-                    this.salesState.pendingQuestion =
-                        null;
-
-                    this.salesState.stage =
-                        "recommendation";
-
-
-                    return {
-
-                        type: "product",
-
-                        product:
-                            product,
-
-                        salesMessage:
-                            `For something simple and practical, I'd recommend ${product.name}. It's a straightforward option for everyday use without paying for features you may not need.`
-
-                    };
+                        `For something simple and practical, I'd recommend ${product.name}. It's a straightforward option without paying for features you may not need.`
+                    );
 
                 }
 
@@ -1155,135 +821,82 @@ class AIAgent {
         }
 
 
-        /* =====================================================
-        FOLLOW-UP: WHICH ONE DO YOU RECOMMEND?
-        ===================================================== */
+        /* ---------- WHICH ONE DO YOU RECOMMEND? ---------- */
 
         if (
-            this.salesState.stage === "recommendation" &&
-            this.containsAny(
-                text,
-                [
-                    "which one",
-                    "which do you recommend",
-                    "which would you recommend",
-                    "what do you recommend",
-                    "which should i choose",
-                    "which should i buy",
-                    "which is best for me",
-                    "what would you recommend",
-                    "recommend one"
-                ]
-            )
+            stage === "recommendation" &&
+            this.containsAny(text, [
+                "which one",
+                "which do you recommend",
+                "which would you recommend",
+                "what do you recommend",
+                "which should i choose",
+                "which should i buy",
+                "which is best for me",
+                "what would you recommend",
+                "recommend one"
+            ])
         ) {
 
-            const product =
-                this.getRecommendationForPreference();
+            const product = this.getRecommendationForPreference();
 
             if (product) {
 
-                this.salesState.lastRecommendedProduct =
-                    product;
-
+                this.salesState.lastRecommendedProduct = product;
 
                 let reason =
                     `Based on what you've told me, I'd recommend ${product.name}.`;
 
-
-                if (
-                    this.salesState.customerPreference ===
-                    "price"
-                ) {
-
+                if (this.salesState.customerPreference === "price") {
                     reason +=
                         ` You mentioned that affordability is important to you, and ${product.name} is our most affordable option at ${product.price}.`;
-
                 }
-
-                else if (
-                    this.salesState.customerPreference ===
-                    "features"
-                ) {
-
+                else if (this.salesState.customerPreference === "features") {
                     reason +=
                         ` You mentioned that you'd prefer more features, and this is our more advanced option.`;
-
                 }
-
-                else if (
-                    this.salesState.customerPreference ===
-                    "simple"
-                ) {
-
+                else if (this.salesState.customerPreference === "simple") {
                     reason +=
                         ` You mentioned that you wanted something simple, and this option is designed for straightforward everyday use.`;
-
                 }
 
-
-                return {
-
-                    type: "text",
-
-                    text: reason
-
-                };
+                return { type: "text", text: reason };
 
             }
 
         }
 
 
-        /* =====================================================
-        FOLLOW-UP: COMPARE
-        ===================================================== */
+        /* ---------- COMPARE (inside a recommendation) ---------- */
 
         if (
-            this.salesState.stage === "recommendation" &&
-            this.containsAny(
-                text,
-                [
-                    "compare",
-                    "comparison",
-                    "what's the difference",
-                    "what is the difference",
-                    "difference between",
-                    "which is better"
-                ]
-            )
+            stage === "recommendation" &&
+            this.containsAny(text, [
+                "compare",
+                "comparison",
+                "whats the difference",
+                "what is the difference",
+                "difference between",
+                "which is better"
+            ])
         ) {
 
-            const products =
-                this.findProductsForComparison(text);
+            const products = this.findProductsForComparison(text);
 
+            if (products.length >= 2) {
 
-            if (
-                products.length >= 2
-            ) {
-
-                this.salesState.comparedProducts =
-                    products;
-
-                this.salesState.stage =
-                    "comparison";
-
+                this.salesState.comparedProducts = products;
+                this.salesState.stage = "comparison";
 
                 return {
-
                     type: "comparison",
-
-                    products:
-                        products,
-
-                    recommendedId:
-                        this.getRecommendedIdFor(products)
-
+                    products: products,
+                    recommendedId: this.getRecommendedIdFor(products)
                 };
 
             }
 
         }
-
 
         return null;
 
@@ -1291,32 +904,23 @@ class AIAgent {
 
 
     /* =========================================================
-    RECOMMENDATION BASED ON CUSTOMER PREFERENCE
-    ========================================================= */
+       RECOMMENDATION HELPERS
+    ========================================================== */
 
     getRecommendationForPreference() {
 
-        switch (
-            this.salesState.customerPreference
-        ) {
+        switch (this.salesState.customerPreference) {
 
             case "price":
-
                 return this.getCheapestProduct();
-
 
             case "features":
-
                 return this.getPremiumProduct();
 
-
             case "simple":
-
                 return this.getCheapestProduct();
 
-
             default:
-
                 return this.salesState.lastRecommendedProduct;
 
         }
@@ -1324,68 +928,36 @@ class AIAgent {
     }
 
 
-    /* =========================================================
-    RECOMMENDED PRODUCT ID FOR A COMPARISON
-    ========================================================= */
-
     getRecommendedIdFor(products) {
 
-        if (
-            !products ||
-            !products.length
-        ) {
-
+        if (!products || !products.length) {
             return null;
-
         }
 
-
-        const candidate =
-            this.getRecommendationForPreference();
+        const candidate = this.getRecommendationForPreference();
 
         if (!candidate) {
-
             return null;
-
         }
 
-
-        const isInList =
-            products.some(
-                product =>
-                    product.id === candidate.id
-            );
-
-        return isInList ? candidate.id : null;
+        return products.some(p => p.id === candidate.id)
+            ? candidate.id
+            : null;
 
     }
 
 
-    /* =========================================================
-    GET NUMERIC PRICE
-    ========================================================= */
-
     getNumericPrice(price, priceValue) {
 
-        if (
-            typeof priceValue === "number" &&
-            !Number.isNaN(priceValue)
-        ) {
-
+        if (typeof priceValue === "number" && !Number.isNaN(priceValue)) {
             return priceValue;
-
         }
 
         if (typeof price === "number") {
-
             return price;
-
         }
 
-        return parseFloat(
-            String(price)
-                .replace(/[^0-9.]/g, "")
-        );
+        return parseFloat(String(price).replace(/[^0-9.]/g, ""));
 
     }
 
@@ -1394,83 +966,42 @@ class AIAgent {
        PRODUCT DETECTION
     ========================================================== */
 
+    scoreProduct(text, product) {
+
+        let score = 0;
+
+        for (const keyword of product.keywords || []) {
+            if (this.phraseIn(text, this.normCached(keyword))) {
+                score += 30;
+            }
+        }
+
+        for (const synonym of product.synonyms || []) {
+            if (this.phraseIn(text, this.normCached(synonym))) {
+                score += 10;
+            }
+        }
+
+        return score;
+
+    }
+
+
     findProduct(text) {
 
         let bestProduct = null;
-
         let highestScore = 0;
 
+        for (const product of this.knowledge.products) {
 
-        for (
-            const product
-            of this.knowledge.products
-        ) {
+            const score = this.scoreProduct(text, product);
 
-            let score = 0;
-
-
-            /* Product keywords */
-
-            for (
-                const keyword
-                of product.keywords || []
-            ) {
-
-                const normalizedKeyword =
-                    this.normalize(keyword);
-
-
-                if (
-                    text.includes(
-                        normalizedKeyword
-                    )
-                ) {
-
-                    score += 30;
-
-                }
-
-            }
-
-
-            /* Product synonyms */
-
-            for (
-                const synonym
-                of product.synonyms || []
-            ) {
-
-                const normalizedSynonym =
-                    this.normalize(synonym);
-
-
-                if (
-                    text.includes(
-                        normalizedSynonym
-                    )
-                ) {
-
-                    score += 10;
-
-                }
-
-            }
-
-
-            if (
-                score > highestScore
-            ) {
-
-                highestScore =
-                    score;
-
-                bestProduct =
-                    product;
-
+            if (score > highestScore) {
+                highestScore = score;
+                bestProduct = product;
             }
 
         }
-
 
         if (!bestProduct || highestScore < 20) {
             return null;
@@ -1481,24 +1012,13 @@ class AIAgent {
     }
 
 
-    /* =========================================================
-       CHEAPEST PRODUCT
-    ========================================================== */
-
     getCheapestProduct() {
 
-        if (
-            !this.knowledge.products.length
-        ) {
-
+        if (!this.knowledge.products.length) {
             return null;
-
         }
 
-
-        return [
-            ...this.knowledge.products
-        ].sort(
+        return [...this.knowledge.products].sort(
             (a, b) =>
                 this.getNumericPrice(a.price, a.priceValue) -
                 this.getNumericPrice(b.price, b.priceValue)
@@ -1507,24 +1027,13 @@ class AIAgent {
     }
 
 
-    /* =========================================================
-       PREMIUM PRODUCT
-    ========================================================== */
-
     getPremiumProduct() {
 
-        if (
-            !this.knowledge.products.length
-        ) {
-
+        if (!this.knowledge.products.length) {
             return null;
-
         }
 
-
-        return [
-            ...this.knowledge.products
-        ].sort(
+        return [...this.knowledge.products].sort(
             (a, b) =>
                 this.getNumericPrice(b.price, b.priceValue) -
                 this.getNumericPrice(a.price, a.priceValue)
@@ -1534,137 +1043,59 @@ class AIAgent {
 
 
     /* =========================================================
-       SIMPLE FUZZY MATCHING
+       SIMPLE FUZZY MATCHING (typo tolerance)
     ========================================================== */
 
     similar(a, b) {
 
-        if (
-            a.length < 4 ||
-            b.length < 4
-        ) {
-
+        if (a.length < 4 || b.length < 4) {
             return false;
-
         }
 
-
-        if (
-            a === b
-        ) {
-
+        if (a === b) {
             return true;
-
         }
 
+        const distance = this.levenshtein(a, b);
 
-        const distance =
-            this.levenshtein(
-                a,
-                b
-            );
-
-
-        const maxLength =
-            Math.max(
-                a.length,
-                b.length
-            );
-
-
-        return (
-            distance <= 1 &&
-            maxLength >= 5
-        );
+        return distance <= 1 && Math.max(a.length, b.length) >= 5;
 
     }
 
-
-    /* =========================================================
-       LEVENSHTEIN DISTANCE
-    ========================================================== */
 
     levenshtein(a, b) {
 
         const matrix = [];
 
-
-        for (
-            let i = 0;
-            i <= b.length;
-            i++
-        ) {
-
+        for (let i = 0; i <= b.length; i++) {
             matrix[i] = [i];
-
         }
 
-
-        for (
-            let j = 0;
-            j <= a.length;
-            j++
-        ) {
-
+        for (let j = 0; j <= a.length; j++) {
             matrix[0][j] = j;
-
         }
 
+        for (let i = 1; i <= b.length; i++) {
 
-        for (
-            let i = 1;
-            i <= b.length;
-            i++
-        ) {
+            for (let j = 1; j <= a.length; j++) {
 
-            for (
-                let j = 1;
-                j <= a.length;
-                j++
-            ) {
-
-                if (
-                    b.charAt(i - 1) ===
-                    a.charAt(j - 1)
-                ) {
-
-                    matrix[i][j] =
-                        matrix[i - 1][j - 1];
-
+                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
                 }
-
                 else {
-
-                    matrix[i][j] =
-                        Math.min(
-
-                            matrix[i - 1][j - 1] + 1,
-
-                            matrix[i][j - 1] + 1,
-
-                            matrix[i - 1][j] + 1
-
-                        );
-
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j] + 1
+                    );
                 }
 
             }
 
         }
 
-
         return matrix[b.length][a.length];
 
-    }
-
-
-    /* =========================================================
-       TEXT HELPERS
-    ========================================================== */
-
-    containsAny(text, words) {
-        const normalizedText = this.normalize(text);
-        return words.some(word => normalizedText.includes(this.normalize(word)));
     }
 
 
@@ -1679,21 +1110,18 @@ class AIAgent {
             this.config.assistant &&
             this.config.assistant.fallback
         ) {
-
             return this.config.assistant.fallback;
-
         }
-
 
         return `
 I'm not completely sure about that, but I can help you with:
 
-• Products
-• Pricing
-• Recommendations
-• Delivery
-• Returns
-• Support
+• How PointsGo works
+• Supported credit cards
+• Plans and pricing
+• Booking with points
+• Your account
+• Contacting support
 
 What would you like to know?
         `.trim();

@@ -164,6 +164,10 @@ const KNOWLEDGE = {
                 "how does it work",
                 "how it works",
                 "how does pointsgo work",
+                "how does this work",
+                "how does this site work",
+                "how does the site work",
+                "how does the website work",
                 "how do i use this",
                 "how do i use pointsgo",
                 "how do i search",
@@ -511,6 +515,27 @@ const KNOWLEDGE = {
 
             answer:
                 "PointsGo aims to help you find the best flight deals for the points you've saved. I can't quote specific savings, because they depend on your route, dates and points balance."
+        },
+
+
+        {
+            id: "cheap-flights",
+
+            priority: 11,
+
+            keywords: [
+                "cheap flights",
+                "cheapest flights",
+                "cheap tickets",
+                "cheap airfare",
+                "cheap fares",
+                "low fares"
+            ],
+
+            synonyms: [],
+
+            answer:
+                "PointsGo is built for flights you pay for with points and miles, so you can use points instead of cash. I can't quote fares or prices, because award prices change by route, date and airline."
         },
 
 
@@ -1148,6 +1173,13 @@ const KNOWLEDGE = {
                 "data security",
                 "is it safe",
                 "is it secure",
+                "is pointsgo safe",
+                "is pointsgo legit",
+                "is this legit",
+                "is it legit",
+                "is it a scam",
+                "can i trust you",
+                "safe to use",
                 "encrypted",
                 "what data do you collect",
                 "what information do you collect"
@@ -1555,8 +1587,9 @@ const KNOWLEDGE = {
             priority: 10,
 
             keywords: [
-                "support",
                 "customer support",
+                "contact support",
+                "get support",
                 "customer service",
                 "need help",
                 "support team",
@@ -1569,7 +1602,6 @@ const KNOWLEDGE = {
             ],
 
             synonyms: [
-                "support",
                 "assistance",
                 "customer service"
             ],
